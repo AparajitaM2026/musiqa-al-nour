@@ -5,49 +5,37 @@ import LegalPage from '@/components/LegalPage';
 export default function TermsOfService() {
   const { t, lang } = useLanguage();
   const updated = lang === 'ar' ? '١٧ أغسطس ٢٠٢٦' : 'August 17, 2026';
+  const sections = lang === 'ar' ? [
+    { h: 'التعريفات', p: 'يقصد بـ "الخدمة" تطبيق نغمة ومنصته لبث الموسيقى، و"المحتوى" أي مقاطع صوتية وأعمال فنية وبيانات مرتبطة بها، و"المستخدم" أي شخص يستخدم الخدمة.' },
+    { h: 'حقوق المستخدم', p: 'يحق لك تصفح المحتوى المتاح وإنشاء حساب وإدارة تفضيلاتك. يخضع الوصول الكامل للبث لتسجيل الدخول.' },
+    { h: 'قواعد بث الصوت', p: 'يُسمح بالبث للاستماع الشخصي فقط. يُحظر التسجيل أو إعادة البث أو أي استخدام تجاري غير مصرّح به للمحتوى.' },
+    { h: 'الملكية الفكرية', p: 'جميع حقوق المحتوى مملوكة لأصحابها أو مرخّصة لـ نغمة. لا تكتسب أي حقوق في المحتوى بمجرد استخدامه.' },
+    { h: 'حدود المسؤولية', p: 'تُقدَّم الخدمة "كما هي" دون ضمانات. لا تتحمّل نغمة مسؤولية أي أضرار غير مباشرة أو عرضية ناتجة عن الاستخدام.' },
+    { h: 'الإنهاء', p: 'يمكنك حذف حسابك في أي وقت من إعدادات الحساب. كما يجوز لنا تعليق أو إنهاء الوصول عند مخالفة هذه الشروط.' },
+    { h: 'القانون الحاكم', p: 'تخضع هذه الشروط لقواني​​ن الولاية القضائية المعمول بها دون تعارض مع مبادئها.' },
+  ] : [
+    { h: 'Definitions', p: '"Service" means the Naghma app and its music streaming platform, "Content" means any audio tracks, artwork, and associated data, and "User" means any person using the Service.' },
+    { h: 'User Rights', p: 'You may browse available content, create an account, and manage your preferences. Full streaming access requires logging in.' },
+    { h: 'Audio Streaming Rules', p: 'Streaming is permitted for personal listening only. Recording, re-broadcasting, or any unauthorized commercial use of Content is prohibited.' },
+    { h: 'Intellectual Property', p: 'All Content rights belong to their owners or are licensed to Naghma. You acquire no rights in the Content by using it.' },
+    { h: 'Limitation of Liability', p: 'The Service is provided "as is" without warranties. Naghma is not liable for any indirect or incidental damages arising from use.' },
+    { h: 'Termination', p: 'You may delete your account at any time from Account Settings. We may also suspend or terminate access upon violation of these terms.' },
+    { h: 'Governing Law', p: 'These terms are governed by the laws of the applicable jurisdiction without conflict with its principles.' },
+  ];
+
   return (
     <LegalPage title={t('legal.terms.title')} updated={updated}>
       {lang === 'ar' ? (
-        <>
-          <p>مرحباً بك في نغمة. باستخدامك خدمة البث الخاصة بنا فإنك توافق على هذه الشروط.</p>
-          <div>
-            <h2 className="text-lg font-semibold mb-1">١. الحسابات</h2>
-            <p>يجب أن يكون عمرك ١٣ سنة على الأقل لإنشاء حساب. أنت مسؤول عن الحفاظ على أمان بيانات اعتمادك.</p>
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold mb-1">٢. الاشتراكات</h2>
-            <p>تتجدد الاشتراكات المدفوعة تلقائياً حتى يتم إلغاؤها. يمكنك الإلغاء في أي وقت من ملفك الشخصي.</p>
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold mb-1">٣. المحتوى</h2>
-            <p>جميع الموسيقى والأعمال الفنية مرخّصة لـ نغمة للبث. لا يجوز لك تنزيل المحتوى أو إعادة توزيعه إلا بما يسمح به باقتك.</p>
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold mb-1">٤. الإنهاء</h2>
-            <p>قد نعلّق أو ننهي الحسابات التي تنتهك هذه الشروط.</p>
-          </div>
-        </>
+        <p>مرحباً بك في نغمة. باستخدامك خدمتنا فإنك توافق على هذه الشروط.</p>
       ) : (
-        <>
-          <p>Welcome to Naghma. By using our streaming service you agree to these terms.</p>
-          <div>
-            <h2 className="text-lg font-semibold mb-1">1. Accounts</h2>
-            <p>You must be at least 13 years old to create an account. You are responsible for keeping your credentials secure.</p>
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold mb-1">2. Subscriptions</h2>
-            <p>Paid subscriptions auto-renew until canceled. You can cancel anytime from your profile.</p>
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold mb-1">3. Content</h2>
-            <p>All music and artwork are licensed to Naghma for streaming. You may not download or redistribute content except where permitted by your plan.</p>
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold mb-1">4. Termination</h2>
-            <p>We may suspend or terminate accounts that violate these terms.</p>
-          </div>
-        </>
+        <p>Welcome to Naghma. By using our service you agree to these terms.</p>
       )}
+      {sections.map((s, i) => (
+        <div key={i}>
+          <h2 className="text-lg font-semibold mb-1">{s.h}</h2>
+          <p>{s.p}</p>
+        </div>
+      ))}
     </LegalPage>
   );
 }

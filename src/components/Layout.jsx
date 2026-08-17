@@ -7,6 +7,7 @@ import Sidebar from '@/components/Sidebar';
 import MobileNav from '@/components/MobileNav';
 import AudioPlayer from '@/components/AudioPlayer';
 import MiniPlayer from '@/components/MiniPlayer';
+import AuthGateModal from '@/components/AuthGateModal';
 import LanguageToggle from '@/components/LanguageToggle';
 import UserMenu from '@/components/UserMenu';
 import Footer from '@/components/Footer';
@@ -14,7 +15,7 @@ import { usePlayer } from '@/lib/PlayerContext';
 
 export default function Layout() {
   const { dir, t } = useLanguage();
-  const { currentTrack } = usePlayer();
+  const { currentTrack, showAuthGate, closeAuthGate } = usePlayer();
   return (
     <div dir={dir} className="min-h-screen bg-background text-foreground flex flex-col">
       <header className="sticky top-0 z-30 h-16 border-b border-border bg-background/80 backdrop-blur flex items-center justify-between px-4 md:px-6">
@@ -41,6 +42,7 @@ export default function Layout() {
       <AudioPlayer />
       {currentTrack && <MiniPlayer />}
       <MobileNav />
+      <AuthGateModal open={showAuthGate} onClose={closeAuthGate} />
     </div>
   );
 }

@@ -56,10 +56,6 @@ export default function UserMenu() {
           <User className="w-4 h-4" />
           {t('menu.myAccount')}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate('/profile#subscription')}>
-          <CreditCard className="w-4 h-4" />
-          {t('menu.subscription')}
-        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => logout()} className="text-destructive focus:text-destructive">
           <LogOut className="w-4 h-4" />

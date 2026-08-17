@@ -7,7 +7,6 @@ const links = [
   { to: '/terms', key: 'footer.terms' },
   { to: '/privacy', key: 'footer.privacy' },
   { to: '/dmca', key: 'footer.dmca' },
-  { to: '/subscription-terms', key: 'footer.subscriptionTerms' },
 ];
 
 export default function Footer() {

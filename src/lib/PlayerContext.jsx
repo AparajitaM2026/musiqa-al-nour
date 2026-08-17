@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
+import { useAuth } from '@/lib/AuthContext';
 
 const PlayerContext = createContext(null);
 
 export function PlayerProvider({ children }) {
+  const { isAuthenticated } = useAuth();
   const audioRef = useRef(null);
   const [queue, setQueue] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
@@ -13,6 +15,7 @@ export function PlayerProvider({ children }) {
   const [history, setHistory] = useState(() => {
     try { return JSON.parse(localStorage.getItem('naghma-history') || '[]'); } catch { return []; }
   });
+  const [showAuthGate, setShowAuthGate] = useState(false);
 
   const next = useCallback(() => {
     setCurrentIndex((prev) => {
@@ -58,6 +61,7 @@ export function PlayerProvider({ children }) {
   const currentTrack = currentIndex >= 0 ? queue[currentIndex] : null;
 
   const playTrack = useCallback((track, list) => {
+    if (!isAuthenticated) { setShowAuthGate(true); return; }
     const q = list && list.length ? list : [track];
     const idx = q.findIndex((t) => t.id === track.id);
     const finalIdx = idx >= 0 ? idx : 0;
@@ -120,6 +124,7 @@ export function PlayerProvider({ children }) {
     <PlayerContext.Provider
       value={{
         currentTrack, queue, currentIndex, isPlaying, currentTime, duration, volume, history,
+        showAuthGate, closeAuthGate: () => setShowAuthGate(false),
         playTrack, togglePlay, next, prev, seek, setVolume, clearHistory,
       }}
     >
