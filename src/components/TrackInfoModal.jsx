@@ -11,13 +11,17 @@ import { Button } from '@/components/ui/button';
 import { Image } from '@/components/ui/image';
 import { useLanguage, localize } from '@/lib/i18n';
 import { useToast } from '@/components/ui/use-toast';
-import { Music, Share2, Plus } from 'lucide-react';
+import { Music, Share2, Heart } from 'lucide-react';
+import { useFavorites } from '@/lib/useFavorites';
+import { cn } from '@/lib/utils';
 
 export default function TrackInfoModal({ track, onClose }) {
   const { t, lang } = useLanguage();
   const { toast } = useToast();
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   if (!track) return null;
+  const isFav = isFavorite(track.id);
 
   const title = localize(lang, track, 'title');
   const artist = localize(lang, track, 'artist') || 'N/A';
@@ -36,13 +40,10 @@ export default function TrackInfoModal({ track, onClose }) {
     } catch (e) {}
   };
 
-  const addToPlaylist = () => {
-    try {
-      const saved = JSON.parse(localStorage.getItem('naghma-saved-tracks') || '[]');
-      if (!saved.includes(track.id)) saved.push(track.id);
-      localStorage.setItem('naghma-saved-tracks', JSON.stringify(saved));
-    } catch (e) {}
-    toast({ title: t('trackinfo.addedToPlaylist') });
+  const addToFavorites = () => {
+    if (isFav) return;
+    toggleFavorite(track.id);
+    toast({ title: t('trackinfo.addedToFavorite') });
   };
 
   const renderRow = (label, value) => (
@@ -90,8 +91,8 @@ export default function TrackInfoModal({ track, onClose }) {
         </div>
 
         <DialogFooter className="flex-row gap-2 sm:justify-between">
-          <Button variant="outline" size="sm" onClick={addToPlaylist}>
-            <Plus className="w-4 h-4 me-1" /> {t('trackinfo.addToPlaylist')}
+          <Button variant="outline" size="sm" onClick={addToFavorites} disabled={isFav} className={cn(isFav && 'text-red-500')}>
+            <Heart className={cn('w-4 h-4 me-1', isFav && 'fill-current')} /> {isFav ? t('trackinfo.addedToFavorite') : t('trackinfo.favorite')}
           </Button>
           <Button variant="outline" size="sm" onClick={share}>
             <Share2 className="w-4 h-4 me-1" /> {t('trackinfo.share')}
