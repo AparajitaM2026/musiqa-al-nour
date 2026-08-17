@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useLanguage } from '@/lib/i18n';
+import { useFollows } from '@/lib/FollowContext';
 import TrackCard from '@/components/TrackCard';
 import AlbumCard from '@/components/AlbumCard';
 import ArtistCard from '@/components/ArtistCard';
@@ -11,6 +12,7 @@ const GENRES = ['khaliji', 'swahili', 'egyptian'];
 
 export default function Home() {
   const { t, lang } = useLanguage();
+  const { follows } = useFollows();
   const [tracks, setTracks] = useState([]);
   const [artists, setArtists] = useState([]);
   const [albums, setAlbums] = useState([]);
@@ -46,12 +48,29 @@ export default function Home() {
     );
   }
 
+  const followedTracks = tracks.filter((tr) => follows.includes(tr.artist));
+
   return (
     <div className="px-4 md:px-8 py-6 space-y-10">
       <div>
         <h1 className="text-2xl md:text-3xl font-bold">{t('home.welcome')}</h1>
         <p className="text-muted-foreground mt-1">{t('tagline')}</p>
       </div>
+
+      {follows.length > 0 && (
+        <section>
+          <h2 className="text-xl font-bold mb-4">{t('home.following')}</h2>
+          {followedTracks.length > 0 ? (
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {followedTracks.map((tr) => (
+                <TrackCard key={tr.id} track={tr} queue={followedTracks} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">{t('home.followingEmpty')}</p>
+          )}
+        </section>
+      )}
 
       {playlists.length > 0 && (
         <section>

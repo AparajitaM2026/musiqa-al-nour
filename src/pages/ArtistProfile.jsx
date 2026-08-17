@@ -7,10 +7,13 @@ import { Image } from '@/components/ui/image';
 import { Loader2, Play, Music } from 'lucide-react';
 import TrackRow from '@/components/TrackRow';
 import AlbumCard from '@/components/AlbumCard';
+import { useFollows } from '@/lib/FollowContext';
+import { cn } from '@/lib/utils';
 
 export default function ArtistProfile() {
   const { t, lang } = useLanguage();
   const { playTrack } = usePlayer();
+  const { isFollowing, toggleFollow } = useFollows();
   const [params] = useSearchParams();
   const id = params.get('id');
   const nameParam = params.get('name');
@@ -89,13 +92,21 @@ export default function ArtistProfile() {
           {localize(lang, artist, 'bio') && (
             <p className="text-muted-foreground max-w-2xl mt-3">{localize(lang, artist, 'bio')}</p>
           )}
-          <button
-            onClick={playAll}
-            disabled={!tracks.length}
-            className="mt-4 inline-flex items-center gap-2 h-10 px-6 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
-          >
-            <Play className="w-4 h-4" /> {t('common.play')}
-          </button>
+          <div className="mt-4 flex items-center gap-3">
+            <button
+              onClick={playAll}
+              disabled={!tracks.length}
+              className="inline-flex items-center gap-2 h-10 px-6 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
+            >
+              <Play className="w-4 h-4" /> {t('common.play')}
+            </button>
+            <button
+              onClick={() => toggleFollow(artist.name)}
+              className={cn('inline-flex items-center gap-2 h-10 px-6 rounded-md text-sm font-medium', isFollowing(artist.name) ? 'bg-secondary text-secondary-foreground' : 'border border-border hover:bg-accent')}
+            >
+              {isFollowing(artist.name) ? t('common.following') : t('common.follow')}
+            </button>
+          </div>
         </div>
       </div>
 
