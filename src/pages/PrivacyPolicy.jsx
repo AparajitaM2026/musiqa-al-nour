@@ -22,9 +22,9 @@ export default function PrivacyPolicy() {
   return (
     <LegalPage title={t('legal.privacy.title')} updated={updated}>
       {lang === 'ar' ? (
-        <p>تحترم نغمة خصوصيتك. توضّح هذه السياسة البيانات التي نجمعها وكيفية استخدامها.</p>
+        <p>تحترم موسيقى النور خصوصيتك. توضّح هذه السياسة البيانات التي نجمعها وكيفية استخدامها.</p>
       ) : (
-        <p>Naghma respects your privacy. This policy explains the data we collect and how we use it.</p>
+        <p>Musiqa-Al-Nour respects your privacy. This policy explains the data we collect and how we use it.</p>
       )}
       {sections.map((s, i) => (
         <div key={i}>

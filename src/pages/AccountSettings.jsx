@@ -10,12 +10,12 @@ export default function AccountSettings() {
   const { t } = useLanguage();
   const { theme, setTheme } = useTheme();
   const [notifications, setNotifications] = useState(
-    () => localStorage.getItem('naghma-notifications') !== '0'
+    () => localStorage.getItem('musiqa-al-nour-notifications') !== '0'
   );
 
   const toggleNotifications = (v) => {
     setNotifications(v);
-    localStorage.setItem('naghma-notifications', v ? '1' : '0');
+    localStorage.setItem('musiqa-al-nour-notifications', v ? '1' : '0');
   };
 
   return (

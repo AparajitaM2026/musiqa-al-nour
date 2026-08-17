@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
-const STORAGE_KEY = 'naghma-follows';
+const STORAGE_KEY = 'musiqa-al-nour-follows';
 
 const FollowContext = createContext({
   follows: [],

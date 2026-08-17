@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-const STORAGE_KEY = 'naghma-saved-tracks';
+const STORAGE_KEY = 'musiqa-al-nour-saved-tracks';
 
 export function useFavorites() {
   const [saved, setSaved] = useState(() => {

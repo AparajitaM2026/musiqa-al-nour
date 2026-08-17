@@ -14,7 +14,7 @@ export default function Favorites() {
   useEffect(() => {
     (async () => {
       try {
-        const saved = JSON.parse(localStorage.getItem('naghma-saved-tracks') || '[]');
+        const saved = JSON.parse(localStorage.getItem('musiqa-al-nour-saved-tracks') || '[]');
         const all = await base44.entities.Track.list();
         setTracks(all.filter((tr) => saved.includes(tr.id)));
       } catch (e) {

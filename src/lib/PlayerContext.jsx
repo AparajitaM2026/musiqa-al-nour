@@ -13,7 +13,7 @@ export function PlayerProvider({ children }) {
   const [duration, setDuration] = useState(0);
   const [volume, setVolumeState] = useState(0.8);
   const [history, setHistory] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('naghma-history') || '[]'); } catch { return []; }
+    try { return JSON.parse(localStorage.getItem('musiqa-al-nour-history') || '[]'); } catch { return []; }
   });
   const [showAuthGate, setShowAuthGate] = useState(false);
   const [shuffle, setShuffle] = useState(false);
@@ -85,7 +85,7 @@ export function PlayerProvider({ children }) {
     setHistory((prev) => {
       const filtered = prev.filter((tr) => tr.id !== track.id);
       const updated = [track, ...filtered].slice(0, 20);
-      try { localStorage.setItem('naghma-history', JSON.stringify(updated)); } catch {}
+      try { localStorage.setItem('musiqa-al-nour-history', JSON.stringify(updated)); } catch {}
       return updated;
     });
   }, [isAuthenticated]);
@@ -127,7 +127,7 @@ export function PlayerProvider({ children }) {
 
   const clearHistory = useCallback(() => {
     setHistory([]);
-    try { localStorage.removeItem('naghma-history'); } catch {}
+    try { localStorage.removeItem('musiqa-al-nour-history'); } catch {}
   }, []);
 
   return (

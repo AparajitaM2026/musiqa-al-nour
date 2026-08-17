@@ -18,9 +18,9 @@ export default function DMCA() {
   return (
     <LegalPage title={t('legal.dmca.title')} updated={updated}>
       {lang === 'ar' ? (
-        <p>تستجيب نغمة لإشعارات انتهاك حقوق النشر وفقاً لقانون حقوق النشر الرقمي (DMCA).</p>
+        <p>تستجيب موسيقى النور لإشعارات انتهاك حقوق النشر وفقاً لقانون حقوق النشر الرقمي (DMCA).</p>
       ) : (
-        <p>Naghma responds to copyright infringement notices under the Digital Millennium Copyright Act (DMCA).</p>
+        <p>Musiqa-Al-Nour responds to copyright infringement notices under the Digital Millennium Copyright Act (DMCA).</p>
       )}
       {sections.map((s, i) => (
         <div key={i}>

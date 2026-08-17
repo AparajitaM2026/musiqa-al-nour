@@ -17,14 +17,14 @@ export default function Profile() {
   const { t, lang } = useLanguage();
   const { user, logout } = useAuth();
   const { history } = usePlayer();
-  const [autoplay, setAutoplay] = useState(() => localStorage.getItem('naghma-autoplay') !== '0');
-  const [notifications, setNotifications] = useState(() => localStorage.getItem('naghma-notifications') !== '0');
+  const [autoplay, setAutoplay] = useState(() => localStorage.getItem('musiqa-al-nour-autoplay') !== '0');
+  const [notifications, setNotifications] = useState(() => localStorage.getItem('musiqa-al-nour-notifications') !== '0');
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
 
-  const toggleAutoplay = (v) => { setAutoplay(v); localStorage.setItem('naghma-autoplay', v ? '1' : '0'); };
-  const toggleNotifications = (v) => { setNotifications(v); localStorage.setItem('naghma-notifications', v ? '1' : '0'); };
+  const toggleAutoplay = (v) => { setAutoplay(v); localStorage.setItem('musiqa-al-nour-autoplay', v ? '1' : '0'); };
+  const toggleNotifications = (v) => { setNotifications(v); localStorage.setItem('musiqa-al-nour-notifications', v ? '1' : '0'); };
 
   const handleDelete = async () => {
     setDeleting(true);

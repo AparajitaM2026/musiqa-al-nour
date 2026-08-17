@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const translations = {
   en: {
-    appName: 'Naghma',
+    appName: 'Musiqa-Al-Nour',
     tagline: 'Stream the sounds of the diaspora',
     'nav.home': 'Home',
     'nav.search': 'Search',
@@ -110,7 +110,7 @@ const translations = {
     'favorites.subtitle': "Tracks you've saved to your collection",
     'favorites.empty': "No favorite tracks yet. Open a track's info and add it to your favorites.",
     'trending.title': 'Trending Now',
-    'trending.subtitle': 'Most played across the Naghma community',
+    'trending.subtitle': 'Most played across the Musiqa-Al-Nour community',
     'trending.topTracks': 'Top Tracks',
     'trending.topArtists': 'Top Artists',
     'footer.support': 'Support',
@@ -151,7 +151,7 @@ const translations = {
     'nowplaying.noLyrics': 'Lyrics not available for this track.',
   },
   ar: {
-    appName: 'نغمة',
+    appName: 'موسيقى النور',
     tagline: 'بث أصوات الشتات',
     'nav.home': 'الرئيسية',
     'nav.search': 'بحث',
@@ -259,7 +259,7 @@ const translations = {
     'favorites.subtitle': 'الأغاني التي حفظتها في مجموعتك',
     'favorites.empty': 'لا توجد أغاني مفضلة بعد. افتح معلومات الأغنية وأضفها إلى المفضلة.',
     'trending.title': 'الأكثر رواجاً الآن',
-    'trending.subtitle': 'الأكثر تشغيلاً في مجتمع نغمة',
+    'trending.subtitle': 'الأكثر تشغيلاً في مجتمع موسيقى النور',
     'trending.topTracks': 'الأغاني الأكثر استماعاً',
     'trending.topArtists': 'أبرز الفنانين',
     'footer.support': 'الدعم',
@@ -310,12 +310,12 @@ const defaultLanguageContext = {
 const LanguageContext = createContext(defaultLanguageContext);
 
 export function LanguageProvider({ children }) {
-  const [lang, setLangState] = useState(() => localStorage.getItem('naghma-lang') || 'en');
+  const [lang, setLangState] = useState(() => localStorage.getItem('musiqa-al-nour-lang') || 'en');
 
   useEffect(() => {
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    localStorage.setItem('naghma-lang', lang);
+    localStorage.setItem('musiqa-al-nour-lang', lang);
   }, [lang]);
 
   const setLang = (l) => setLangState(l);
