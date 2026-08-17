@@ -40,10 +40,9 @@ export default function TrackInfoModal({ track, onClose }) {
     } catch (e) {}
   };
 
-  const addToFavorites = () => {
-    if (isFav) return;
+  const toggleFav = () => {
     toggleFavorite(track.id);
-    toast({ title: t('trackinfo.addedToFavorite') });
+    toast({ title: isFav ? t('trackinfo.removedFromFavorite') : t('trackinfo.addedToFavorite') });
   };
 
   const renderRow = (label, value) => (
@@ -91,8 +90,8 @@ export default function TrackInfoModal({ track, onClose }) {
         </div>
 
         <DialogFooter className="flex-row gap-2 sm:justify-between">
-          <Button variant="outline" size="sm" onClick={addToFavorites} disabled={isFav} className={cn(isFav && 'text-red-500')}>
-            <Heart className={cn('w-4 h-4 me-1', isFav && 'fill-current')} /> {isFav ? t('trackinfo.addedToFavorite') : t('trackinfo.favorite')}
+          <Button variant="outline" size="sm" onClick={toggleFav} className={cn(isFav && 'text-red-500')}>
+            <Heart className={cn('w-4 h-4 me-1', isFav && 'fill-current')} /> {isFav ? t('trackinfo.removeFavorite') : t('trackinfo.favorite')}
           </Button>
           <Button variant="outline" size="sm" onClick={share}>
             <Share2 className="w-4 h-4 me-1" /> {t('trackinfo.share')}
