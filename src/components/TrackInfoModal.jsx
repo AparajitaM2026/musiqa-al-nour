@@ -20,8 +20,9 @@ export default function TrackInfoModal({ track, onClose }) {
   if (!track) return null;
 
   const title = localize(lang, track, 'title');
-  const artist = localize(lang, track, 'artist');
+  const artist = localize(lang, track, 'artist') || 'N/A';
   const album = localize(lang, track, 'album');
+  const genre = track.genre ? t(`genre.${track.genre}`) : 'N/A';
 
   const share = async () => {
     const url = `${window.location.origin}/?track=${track.id}`;
@@ -44,23 +45,23 @@ export default function TrackInfoModal({ track, onClose }) {
     toast({ title: t('trackinfo.addedToPlaylist') });
   };
 
-  const credits = [
-    { label: t('trackinfo.composer'), value: track.composer },
-    { label: t('trackinfo.lyricist'), value: track.lyricist },
-    { label: t('trackinfo.label'), value: track.label },
-    { label: t('trackinfo.maqam'), value: track.maqam_genre },
-  ].filter((c) => c.value);
+  const renderRow = (label, value) => (
+    <div className="flex justify-between gap-3 text-sm">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="font-medium text-end truncate">{value}</span>
+    </div>
+  );
 
   return (
     <Dialog open onOpenChange={(o) => { if (!o) onClose(); }}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{t('trackinfo.title')}</DialogTitle>
+          <DialogTitle className="text-xl font-bold leading-tight">{title}</DialogTitle>
           <DialogDescription>{t('trackinfo.subtitle')}</DialogDescription>
         </DialogHeader>
 
         <div className="flex gap-4">
-          <div className="w-28 h-28 rounded-lg overflow-hidden bg-muted shrink-0">
+          <div className="w-24 h-24 rounded-lg overflow-hidden bg-muted shrink-0">
             {track.cover_url ? (
               <Image src={track.cover_url} alt={title} className="w-full h-full object-cover" />
             ) : (
@@ -69,29 +70,24 @@ export default function TrackInfoModal({ track, onClose }) {
               </div>
             )}
           </div>
-          <div className="min-w-0">
-            <div className="text-lg font-bold truncate">{title}</div>
-            <div className="text-sm text-muted-foreground truncate">{artist}</div>
-            {album && <div className="text-sm text-muted-foreground truncate">{album}</div>}
-            <div className="text-xs text-muted-foreground mt-1 flex flex-wrap gap-x-2">
-              {track.release_year && <span>{track.release_year}</span>}
-              {track.genre && <span>{t(`genre.${track.genre}`)}</span>}
-            </div>
-            <div className="text-xs text-muted-foreground mt-1">{t('trackinfo.format')}</div>
+          <div className="flex-1 space-y-2">
+            {renderRow(t('trackinfo.singer'), artist)}
+            {renderRow(t('trackinfo.composer'), track.composer || 'N/A')}
+            {renderRow(t('trackinfo.lyricist'), track.lyricist || 'N/A')}
           </div>
         </div>
 
-        {credits.length > 0 && (
-          <div className="space-y-1.5">
-            <div className="text-sm font-semibold">{t('trackinfo.credits')}</div>
-            {credits.map((c) => (
-              <div key={c.label} className="flex justify-between text-sm gap-4">
-                <span className="text-muted-foreground">{c.label}</span>
-                <span className="font-medium text-end">{c.value}</span>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="space-y-2">
+          {renderRow(t('trackinfo.album'), album || 'N/A')}
+          {renderRow(t('trackinfo.genre'), genre)}
+        </div>
+
+        <div className="border-t border-border" />
+
+        <div className="flex justify-between gap-3 text-sm">
+          <span className="text-muted-foreground">{t('trackinfo.audioSpecs')}</span>
+          <span className="font-medium text-end">{t('trackinfo.format')}</span>
+        </div>
 
         <DialogFooter className="flex-row gap-2 sm:justify-between">
           <Button variant="outline" size="sm" onClick={addToPlaylist}>

@@ -131,6 +131,10 @@ const translations = {
     'trackinfo.linkCopied': 'Link copied to clipboard',
     'trackinfo.addedToPlaylist': 'Added to your playlist',
     'trackinfo.info': 'Track info',
+    'trackinfo.singer': 'Singer/Artist',
+    'trackinfo.album': 'Album',
+    'trackinfo.genre': 'Genre',
+    'trackinfo.audioSpecs': 'Audio Specs',
   },
   ar: {
     appName: 'نغمة',
@@ -262,6 +266,10 @@ const translations = {
     'trackinfo.linkCopied': 'تم نسخ الرابط',
     'trackinfo.addedToPlaylist': 'تمت الإضافة إلى قائمتك',
     'trackinfo.info': 'معلومات الأغنية',
+    'trackinfo.singer': 'المطرب/الفنان',
+    'trackinfo.album': 'الألبوم',
+    'trackinfo.genre': 'النوع',
+    'trackinfo.audioSpecs': 'مواصفات الصوت',
   },
 };
 
