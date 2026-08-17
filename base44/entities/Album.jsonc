@@ -21,14 +21,7 @@
       "type": "number"
     },
     "genre": {
-      "type": "string",
-      "enum": [
-        "khaliji",
-        "swahili",
-        "egyptian",
-        "other"
-      ],
-      "default": "other"
+      "type": "string"
     }
   },
   "required": [

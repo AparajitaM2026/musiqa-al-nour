@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useLanguage, localize } from '@/lib/i18n';
 import { Loader2, Music } from 'lucide-react';
 import PlaylistCard from '@/components/PlaylistCard';
 import { cn } from '@/lib/utils';
 
-const GENRES = ['khaliji', 'swahili', 'egyptian'];
-
 export default function Library() {
   const { t, lang } = useLanguage();
   const [tracks, setTracks] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const genres = useMemo(
+    () => [...new Set(playlists.map((p) => p.genre).filter(Boolean))],
+    [playlists]
+  );
 
   useEffect(() => {
     (async () => {
@@ -43,7 +46,7 @@ export default function Library() {
 
       <section>
         <h2 className="text-xl font-bold mb-4">{t('library.byGenre')}</h2>
-        {GENRES.map((g) => {
+        {genres.map((g) => {
           const genrePlaylists = playlists.filter((p) => p.genre === g);
           if (!genrePlaylists.length) return null;
           return (

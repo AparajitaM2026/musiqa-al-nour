@@ -31,14 +31,10 @@
       "default": 0
     },
     "genre": {
-      "type": "string",
-      "enum": [
-        "khaliji",
-        "swahili",
-        "egyptian",
-        "other"
-      ],
-      "default": "other"
+      "type": "string"
+    },
+    "playlist": {
+      "type": "string"
     },
     "language": {
       "type": "string",

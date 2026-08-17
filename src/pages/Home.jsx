@@ -8,8 +8,6 @@ import ArtistCard from '@/components/ArtistCard';
 import PlaylistCard from '@/components/PlaylistCard';
 import { Loader2 } from 'lucide-react';
 
-const GENRES = ['khaliji', 'swahili', 'egyptian'];
-
 export default function Home() {
   const { t, lang } = useLanguage();
   const { follows } = useFollows();

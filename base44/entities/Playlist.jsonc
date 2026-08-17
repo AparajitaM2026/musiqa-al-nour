@@ -18,14 +18,7 @@
       "type": "string"
     },
     "genre": {
-      "type": "string",
-      "enum": [
-        "khaliji",
-        "swahili",
-        "egyptian",
-        "other"
-      ],
-      "default": "other"
+      "type": "string"
     },
     "track_ids": {
       "type": "array",
