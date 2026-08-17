@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Search, Library, User, TrendingUp } from 'lucide-react';
+import { Home, Search, Library, User, TrendingUp, Heart } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
@@ -9,6 +9,7 @@ const items = [
   { to: '/search', key: 'nav.search', icon: Search },
   { to: '/library', key: 'nav.library', icon: Library },
   { to: '/trending', key: 'nav.trending', icon: TrendingUp },
+  { to: '/favorites', key: 'nav.favorites', icon: Heart },
   { to: '/profile', key: 'nav.profile', icon: User },
 ];
 

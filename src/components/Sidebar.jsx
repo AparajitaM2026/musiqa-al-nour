@@ -9,6 +9,7 @@ const items = [
   { to: '/search', key: 'nav.search', icon: Search },
   { to: '/library', key: 'nav.library', icon: Library },
   { to: '/trending', key: 'nav.trending', icon: TrendingUp },
+  { to: '/favorites', key: 'nav.favorites', icon: Heart },
 ];
 
 export default function Sidebar() {

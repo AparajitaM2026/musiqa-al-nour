@@ -29,6 +29,7 @@ import ArtistProfile from '@/pages/ArtistProfile';
 import Support from '@/pages/Support';
 import History from '@/pages/History';
 import AccountSettings from '@/pages/AccountSettings';
+import Favorites from '@/pages/Favorites';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -60,6 +61,7 @@ const AuthenticatedApp = () => {
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
         <Route path="/library" element={<Library />} />
+        <Route path="/favorites" element={<Favorites />} />
         <Route path="/playlist-details" element={<PlaylistDetails />} />
         <Route path="/album-details" element={<AlbumDetails />} />
         <Route path="/trending" element={<Trending />} />
