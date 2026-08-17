@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { Music } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
+import Logo from '@/components/Logo';
 import Sidebar from '@/components/Sidebar';
 import MobileNav from '@/components/MobileNav';
 import AudioPlayer from '@/components/AudioPlayer';
@@ -25,11 +25,8 @@ export default function Layout() {
     <FollowProvider>
     <div dir={dir} className="min-h-screen bg-background text-foreground flex flex-col">
       <header className="sticky top-0 z-30 h-16 border-b border-border bg-background/80 backdrop-blur flex items-center justify-between px-4 md:px-6">
-        <Link to="/" className="flex items-center gap-2 font-bold text-lg">
-          <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground grid place-items-center">
-            <Music className="w-4 h-4" />
-          </span>
-          {t('appName')}
+        <Link to="/" className="flex items-center">
+          <Logo className="h-10 w-auto" />
         </Link>
         <div className="flex items-center gap-3">
           <LanguageToggle />
