@@ -2,9 +2,10 @@ import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { usePlayer, formatTime } from '@/lib/PlayerContext';
 import { useLanguage, localize } from '@/lib/i18n';
+import { useTrackInfo } from '@/components/TrackInfoModalProvider';
 import { Image } from '@/components/ui/image';
 import { cn } from '@/lib/utils';
-import { ChevronDown, Shuffle, SkipBack, Play, Pause, SkipForward, Repeat, Music } from 'lucide-react';
+import { ChevronDown, Shuffle, SkipBack, Play, Pause, SkipForward, Repeat, Music, Info } from 'lucide-react';
 
 export default function NowPlaying({ onClose }) {
   const { t, lang, dir } = useLanguage();
@@ -12,6 +13,7 @@ export default function NowPlaying({ onClose }) {
     currentTrack, isPlaying, togglePlay, next, prev, currentTime, duration, seek,
     queue, currentIndex, shuffle, setShuffle, repeat, setRepeat, playTrack,
   } = usePlayer();
+  const { openTrackInfo } = useTrackInfo();
   const [tab, setTab] = useState('lyrics');
   const sliderRef = useRef(null);
   const progress = duration ? (currentTime / duration) * 100 : 0;
@@ -44,7 +46,9 @@ export default function NowPlaying({ onClose }) {
           <ChevronDown className="w-6 h-6" />
         </button>
         <div className="text-xs uppercase tracking-wider text-muted-foreground">{t('player.nowPlaying')}</div>
-        <div className="w-10" />
+        <button onClick={() => openTrackInfo(currentTrack)} className="text-muted-foreground hover:text-foreground p-2" aria-label={t('trackinfo.info')}>
+          <Info className="w-5 h-5" />
+        </button>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center gap-4 min-h-0">
