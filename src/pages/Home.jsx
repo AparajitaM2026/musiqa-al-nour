@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useLanguage } from '@/lib/i18n';
+import { useAuth } from '@/lib/AuthContext';
 import { useFollows } from '@/lib/FollowContext';
 import TrackCard from '@/components/TrackCard';
 import AlbumCard from '@/components/AlbumCard';
@@ -13,6 +14,7 @@ import { Loader2 } from 'lucide-react';
 
 export default function Home() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
   const { follows } = useFollows();
   const [tracks, setTracks] = useState([]);
   const [artists, setArtists] = useState([]);
@@ -61,7 +63,9 @@ export default function Home() {
   return (
     <div className="px-4 md:px-8 py-6 space-y-10">
       <div>
-        <h1 className="text-2xl md:text-3xl font-bold">{t('home.welcome')}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold">
+          {isAuthenticated ? t('home.welcome') : t('home.welcomeGuest')}
+        </h1>
         <p className="text-muted-foreground mt-1">{t('tagline')}</p>
       </div>
 
