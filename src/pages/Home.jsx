@@ -7,16 +7,19 @@ import TrackCard from '@/components/TrackCard';
 import AlbumCard from '@/components/AlbumCard';
 import ArtistCard from '@/components/ArtistCard';
 import PlaylistCard from '@/components/PlaylistCard';
+import HeroBanner from '@/components/HeroBanner';
+import GenreChips from '@/components/GenreChips';
 import { Loader2 } from 'lucide-react';
 
 export default function Home() {
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
   const { follows } = useFollows();
   const [tracks, setTracks] = useState([]);
   const [artists, setArtists] = useState([]);
   const [albums, setAlbums] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [genre, setGenre] = useState('all');
 
   useEffect(() => {
     (async () => {
@@ -47,6 +50,12 @@ export default function Home() {
     );
   }
 
+  const byGenre = (list) => (genre === 'all' ? list : list.filter((x) => x.genre === genre));
+  const visibleTracks = byGenre(tracks);
+  const visibleArtists = byGenre(artists);
+  const visibleAlbums = byGenre(albums);
+  const visiblePlaylists = byGenre(playlists);
+  const featured = playlists.find((p) => p.cover_url) || playlists[0] || albums[0];
   const followedTracks = tracks.filter((tr) => follows.includes(tr.artist));
 
   return (
@@ -55,6 +64,10 @@ export default function Home() {
         <h1 className="text-2xl md:text-3xl font-bold">{t('home.welcome')}</h1>
         <p className="text-muted-foreground mt-1">{t('tagline')}</p>
       </div>
+
+      <HeroBanner item={featured} tracks={tracks} />
+
+      <GenreChips value={genre} onChange={setGenre} />
 
       {follows.length > 0 && (
         <section>
@@ -71,38 +84,40 @@ export default function Home() {
         </section>
       )}
 
-      <section>
-        <h2 className="text-xl font-bold mb-4">{t('home.popularTracks')}</h2>
-        <div className="flex gap-4 overflow-x-auto pb-2">
-          {tracks.map((tr) => (
-            <TrackCard key={tr.id} track={tr} queue={tracks} />
-          ))}
-        </div>
-      </section>
+      {visibleTracks.length > 0 && (
+        <section>
+          <h2 className="text-xl font-bold mb-4">{t('home.popularTracks')}</h2>
+          <div className="flex gap-4 overflow-x-auto pb-2">
+            {visibleTracks.map((tr) => (
+              <TrackCard key={tr.id} track={tr} queue={visibleTracks} />
+            ))}
+          </div>
+        </section>
+      )}
 
-      {artists.length > 0 && (
+      {visibleArtists.length > 0 && (
         <section>
           <h2 className="text-xl font-bold mb-4">{t('home.topArtists')}</h2>
           <div className="flex gap-4 overflow-x-auto pb-2">
-            {artists.map((ar) => (
+            {visibleArtists.map((ar) => (
               <ArtistCard key={ar.id} artist={ar} />
             ))}
           </div>
         </section>
       )}
 
-      {albums.length > 0 && (
+      {visibleAlbums.length > 0 && (
         <section>
           <h2 className="text-xl font-bold mb-4">{t('home.albums')}</h2>
           <div className="flex gap-4 overflow-x-auto pb-2">
-            {albums.map((al) => (
+            {visibleAlbums.map((al) => (
               <AlbumCard key={al.id} album={al} />
             ))}
           </div>
         </section>
       )}
 
-      {playlists.length > 0 && (
+      {visiblePlaylists.length > 0 && (
         <section>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold">{t('home.featuredPlaylists')}</h2>
@@ -111,7 +126,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="flex gap-4 overflow-x-auto pb-2">
-            {playlists.map((pl) => (
+            {visiblePlaylists.map((pl) => (
               <PlaylistCard key={pl.id} playlist={pl} tracks={tracks} />
             ))}
           </div>
