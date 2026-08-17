@@ -187,7 +187,13 @@ const translations = {
   },
 };
 
-const LanguageContext = createContext(null);
+const defaultLanguageContext = {
+  lang: 'en',
+  setLang: () => {},
+  t: (key) => translations.en[key] ?? key,
+  dir: 'ltr',
+};
+const LanguageContext = createContext(defaultLanguageContext);
 
 export function LanguageProvider({ children }) {
   const [lang, setLangState] = useState(() => localStorage.getItem('naghma-lang') || 'en');
@@ -209,9 +215,7 @@ export function LanguageProvider({ children }) {
 }
 
 export function useLanguage() {
-  const ctx = useContext(LanguageContext);
-  if (!ctx) throw new Error('useLanguage must be used within LanguageProvider');
-  return ctx;
+  return useContext(LanguageContext);
 }
 
 export const localize = (lang, obj, key) => {
