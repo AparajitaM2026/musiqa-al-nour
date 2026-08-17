@@ -18,7 +18,7 @@ export default function MiniPlayer() {
         <div className="w-10 h-10 rounded-md overflow-hidden shrink-0 bg-muted">
           <Image src={currentTrack.cover_url} alt="" className="w-full h-full object-cover" />
         </div>
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 cursor-pointer" onClick={() => openTrackInfo(currentTrack)}>
           <div className="text-sm font-semibold truncate">{localize(lang, currentTrack, 'title')}</div>
           <div className="text-xs text-muted-foreground truncate">{localize(lang, currentTrack, 'artist')}</div>
         </div>

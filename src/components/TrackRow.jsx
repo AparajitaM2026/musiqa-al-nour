@@ -4,6 +4,7 @@ import { Image } from '@/components/ui/image';
 import { usePlayer, formatTime } from '@/lib/PlayerContext';
 import { useLanguage, localize } from '@/lib/i18n';
 import { useTrackInfo } from '@/components/TrackInfoModalProvider';
+import { Link } from 'react-router-dom';
 
 export default function TrackRow({ track, queue, index }) {
   const { playTrack, currentTrack, isPlaying, togglePlay } = usePlayer();
@@ -30,7 +31,13 @@ export default function TrackRow({ track, queue, index }) {
       </div>
       <div className="flex-1 min-w-0">
         <div className={`text-sm font-medium truncate ${isCurrent ? 'text-primary' : ''}`}>{localize(lang, track, 'title')}</div>
-        <div className="text-xs text-muted-foreground truncate">{localize(lang, track, 'artist')}</div>
+        <Link
+          to={`/artist-profile?name=${encodeURIComponent(localize(lang, track, 'artist'))}`}
+          onClick={(e) => e.stopPropagation()}
+          className="text-xs text-muted-foreground truncate hover:text-foreground hover:underline"
+        >
+          {localize(lang, track, 'artist')}
+        </Link>
       </div>
       <div className="text-xs text-muted-foreground tabular-nums hidden sm:block">{formatTime(track.duration)}</div>
       <button

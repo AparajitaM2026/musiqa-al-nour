@@ -29,7 +29,7 @@ export default function AudioPlayer() {
 
   return (
     <div className="fixed bottom-0 inset-x-0 z-40 hidden h-20 border-t border-border bg-background/95 backdrop-blur md:flex items-center gap-4 px-6">
-      <div className="flex items-center gap-3 w-64 min-w-0">
+      <div className="flex items-center gap-3 w-64 min-w-0 cursor-pointer" onClick={() => openTrackInfo(currentTrack)}>
         <div className="w-12 h-12 rounded-md overflow-hidden shrink-0 bg-muted">
           <Image src={currentTrack.cover_url} alt={localize(lang, currentTrack, 'title')} className="w-full h-full object-cover" />
         </div>

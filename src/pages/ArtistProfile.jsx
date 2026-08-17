@@ -13,6 +13,7 @@ export default function ArtistProfile() {
   const { playTrack } = usePlayer();
   const [params] = useSearchParams();
   const id = params.get('id');
+  const nameParam = params.get('name');
   const [artist, setArtist] = useState(null);
   const [tracks, setTracks] = useState([]);
   const [albums, setAlbums] = useState([]);
@@ -20,25 +21,32 @@ export default function ArtistProfile() {
 
   useEffect(() => {
     (async () => {
-      if (!id) {
+      if (!id && !nameParam) {
         setLoading(false);
         return;
       }
       try {
         const [a, allTracks, allAlbums] = await Promise.all([
-          base44.entities.Artist.get(id),
+          id ? base44.entities.Artist.get(id) : base44.entities.Artist.list(),
           base44.entities.Track.list(),
           base44.entities.Album.list(),
         ]);
-        setArtist(a);
-        setTracks(allTracks.filter((tr) => tr.artist === a.name || tr.artist === a.name_ar));
-        setAlbums(allAlbums.filter((al) => al.artist === a.name || al.artist === a.name_ar));
+        const resolved = id
+          ? a
+          : Array.isArray(a) ? a.find((ar) => ar.name === nameParam || ar.name_ar === nameParam) : null;
+        if (!resolved) {
+          setLoading(false);
+          return;
+        }
+        setArtist(resolved);
+        setTracks(allTracks.filter((tr) => tr.artist === resolved.name || tr.artist === resolved.name_ar));
+        setAlbums(allAlbums.filter((al) => al.artist === resolved.name || al.artist === resolved.name_ar));
       } catch (e) {
       } finally {
         setLoading(false);
       }
     })();
-  }, [id]);
+  }, [id, nameParam]);
 
   const playAll = () => {
     if (tracks.length) playTrack(tracks[0], tracks);

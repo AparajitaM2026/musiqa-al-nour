@@ -78,7 +78,7 @@ export function PlayerProvider({ children }) {
       try { localStorage.setItem('naghma-history', JSON.stringify(updated)); } catch {}
       return updated;
     });
-  }, []);
+  }, [isAuthenticated]);
 
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;
