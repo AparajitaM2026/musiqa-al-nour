@@ -1,13 +1,15 @@
 import React from 'react';
-import { Play, Pause } from 'lucide-react';
+import { Play, Pause, Info } from 'lucide-react';
 import { usePlayer } from '@/lib/PlayerContext';
 import { useLanguage, localize } from '@/lib/i18n';
+import { useTrackInfo } from '@/components/TrackInfoModalProvider';
 import { Image } from '@/components/ui/image';
 import { Link } from 'react-router-dom';
 
 export default function MiniPlayer() {
   const { currentTrack, isPlaying, togglePlay, next } = usePlayer();
   const { t, lang } = useLanguage();
+  const { openTrackInfo } = useTrackInfo();
   if (!currentTrack) return null;
 
   return (
@@ -20,6 +22,9 @@ export default function MiniPlayer() {
           <div className="text-sm font-semibold truncate">{localize(lang, currentTrack, 'title')}</div>
           <div className="text-xs text-muted-foreground truncate">{localize(lang, currentTrack, 'artist')}</div>
         </div>
+        <button onClick={() => openTrackInfo(currentTrack)} className="text-muted-foreground hover:text-foreground shrink-0" aria-label={t('trackinfo.info')}>
+          <Info className="w-4 h-4" />
+        </button>
         <button onClick={togglePlay} className="w-9 h-9 rounded-full bg-primary text-primary-foreground grid place-items-center shrink-0" aria-label={isPlaying ? t('player.pause') : t('player.play')}>
           {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ms-0.5" />}
         </button>

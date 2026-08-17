@@ -51,6 +51,21 @@
     "plays": {
       "type": "number",
       "default": 0
+    },
+    "composer": {
+      "type": "string"
+    },
+    "lyricist": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "release_year": {
+      "type": "number"
+    },
+    "maqam_genre": {
+      "type": "string"
     }
   },
   "required": [

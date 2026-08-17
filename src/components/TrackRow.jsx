@@ -1,12 +1,14 @@
 import React from 'react';
-import { Play, Pause } from 'lucide-react';
+import { Play, Pause, Info } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { usePlayer, formatTime } from '@/lib/PlayerContext';
 import { useLanguage, localize } from '@/lib/i18n';
+import { useTrackInfo } from '@/components/TrackInfoModalProvider';
 
 export default function TrackRow({ track, queue, index }) {
   const { playTrack, currentTrack, isPlaying, togglePlay } = usePlayer();
   const { lang, t } = useLanguage();
+  const { openTrackInfo } = useTrackInfo();
   const isCurrent = currentTrack?.id === track.id;
   const showPause = isCurrent && isPlaying;
 
@@ -31,6 +33,13 @@ export default function TrackRow({ track, queue, index }) {
         <div className="text-xs text-muted-foreground truncate">{localize(lang, track, 'artist')}</div>
       </div>
       <div className="text-xs text-muted-foreground tabular-nums hidden sm:block">{formatTime(track.duration)}</div>
+      <button
+        onClick={(e) => { e.stopPropagation(); openTrackInfo(track); }}
+        className="text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity p-1"
+        aria-label={t('trackinfo.info')}
+      >
+        <Info className="w-4 h-4" />
+      </button>
     </div>
   );
 }

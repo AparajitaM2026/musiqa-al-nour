@@ -1,13 +1,15 @@
 import React, { useRef } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Info } from 'lucide-react';
 import { usePlayer, formatTime } from '@/lib/PlayerContext';
 import { useLanguage, localize } from '@/lib/i18n';
+import { useTrackInfo } from '@/components/TrackInfoModalProvider';
 import { Image } from '@/components/ui/image';
 import { cn } from '@/lib/utils';
 
 export default function AudioPlayer() {
   const { currentTrack, isPlaying, togglePlay, next, prev, currentTime, duration, seek, volume, setVolume } = usePlayer();
   const { t, lang } = useLanguage();
+  const { openTrackInfo } = useTrackInfo();
   const progress = duration ? (currentTime / duration) * 100 : 0;
   const sliderRef = useRef(null);
 
@@ -68,6 +70,9 @@ export default function AudioPlayer() {
       </div>
 
       <div className="w-64 flex items-center justify-end gap-2">
+        <button onClick={() => openTrackInfo(currentTrack)} className="text-muted-foreground hover:text-foreground" aria-label={t('trackinfo.info')}>
+          <Info className="w-5 h-5" />
+        </button>
         <button onClick={() => setVolume(volume > 0 ? 0 : 0.8)} className="text-muted-foreground hover:text-foreground" aria-label="mute">
           {volume > 0 ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
         </button>
