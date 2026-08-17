@@ -18,6 +18,10 @@ import Home from '@/pages/Home';
 import Search from '@/pages/Search';
 import Library from '@/pages/Library';
 import Profile from '@/pages/Profile';
+import TermsOfService from '@/pages/TermsOfService';
+import PrivacyPolicy from '@/pages/PrivacyPolicy';
+import DMCA from '@/pages/DMCA';
+import SubscriptionTerms from '@/pages/SubscriptionTerms';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -51,6 +55,10 @@ const AuthenticatedApp = () => {
           <Route path="/search" element={<Search />} />
           <Route path="/library" element={<Library />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/dmca" element={<DMCA />} />
+          <Route path="/subscription-terms" element={<SubscriptionTerms />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />

@@ -8,6 +8,8 @@ import MobileNav from '@/components/MobileNav';
 import AudioPlayer from '@/components/AudioPlayer';
 import MiniPlayer from '@/components/MiniPlayer';
 import LanguageToggle from '@/components/LanguageToggle';
+import UserMenu from '@/components/UserMenu';
+import Footer from '@/components/Footer';
 import { usePlayer } from '@/lib/PlayerContext';
 
 export default function Layout() {
@@ -22,13 +24,17 @@ export default function Layout() {
           </span>
           {t('appName')}
         </Link>
-        <LanguageToggle />
+        <div className="flex items-center gap-3">
+          <LanguageToggle />
+          <UserMenu />
+        </div>
       </header>
 
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
         <main className="flex-1 overflow-y-auto pb-36 md:pb-28">
           <Outlet />
+          <Footer />
         </main>
       </div>
 

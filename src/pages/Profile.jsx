@@ -3,8 +3,11 @@ import { base44 } from '@/api/base44Client';
 import { useLanguage } from '@/lib/i18n';
 import LanguageToggle from '@/components/LanguageToggle';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { Image } from '@/components/ui/image';
-import { Loader2, LogOut, Check, Crown } from 'lucide-react';
+import { Loader2, LogOut, Check, Crown, History, Settings } from 'lucide-react';
+import { usePlayer } from '@/lib/PlayerContext';
+import TrackRow from '@/components/TrackRow';
 import { cn } from '@/lib/utils';
 
 const PLANS = [
@@ -19,6 +22,12 @@ export default function Profile() {
   const [sub, setSub] = useState(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(null);
+  const { history } = usePlayer();
+  const [autoplay, setAutoplay] = useState(() => localStorage.getItem('naghma-autoplay') !== '0');
+  const [notifications, setNotifications] = useState(() => localStorage.getItem('naghma-notifications') !== '0');
+
+  const toggleAutoplay = (v) => { setAutoplay(v); localStorage.setItem('naghma-autoplay', v ? '1' : '0'); };
+  const toggleNotifications = (v) => { setNotifications(v); localStorage.setItem('naghma-notifications', v ? '1' : '0'); };
 
   useEffect(() => {
     (async () => {
@@ -85,7 +94,7 @@ export default function Profile() {
         <LanguageToggle />
       </div>
 
-      <section>
+      <section id="subscription">
         <h2 className="text-lg font-bold mb-4">{t('profile.choosePlan')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {PLANS.map((plan) => {
@@ -126,6 +135,44 @@ export default function Profile() {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+          <History className="w-5 h-5" /> {t('profile.listeningHistory')}
+        </h2>
+        {history.length === 0 ? (
+          <p className="text-sm text-muted-foreground">{t('profile.noHistory')}</p>
+        ) : (
+          <div className="space-y-1">
+            {history.map((tr, i) => (
+              <TrackRow key={tr.id} track={tr} queue={history} index={i} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section>
+        <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+          <Settings className="w-5 h-5" /> {t('profile.savedSettings')}
+        </h2>
+        <div className="p-5 rounded-2xl border border-border bg-card space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm font-medium">{t('profile.language')}</div>
+              <div className="text-xs text-muted-foreground">{t('profile.savedSettings')}</div>
+            </div>
+            <LanguageToggle />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-medium">{t('profile.autoplay')}</div>
+            <Switch checked={autoplay} onCheckedChange={toggleAutoplay} />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-medium">{t('profile.notifications')}</div>
+            <Switch checked={notifications} onCheckedChange={toggleNotifications} />
+          </div>
         </div>
       </section>
 

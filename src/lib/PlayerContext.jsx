@@ -10,6 +10,9 @@ export function PlayerProvider({ children }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolumeState] = useState(0.8);
+  const [history, setHistory] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('naghma-history') || '[]'); } catch { return []; }
+  });
 
   const next = useCallback(() => {
     setCurrentIndex((prev) => {
@@ -65,6 +68,12 @@ export function PlayerProvider({ children }) {
       audio.src = q[finalIdx].audio_url;
       audio.play().catch(() => {});
     }
+    setHistory((prev) => {
+      const filtered = prev.filter((tr) => tr.id !== track.id);
+      const updated = [track, ...filtered].slice(0, 20);
+      try { localStorage.setItem('naghma-history', JSON.stringify(updated)); } catch {}
+      return updated;
+    });
   }, []);
 
   const togglePlay = useCallback(() => {
@@ -102,11 +111,16 @@ export function PlayerProvider({ children }) {
     if (audioRef.current) audioRef.current.volume = v;
   }, []);
 
+  const clearHistory = useCallback(() => {
+    setHistory([]);
+    try { localStorage.removeItem('naghma-history'); } catch {}
+  }, []);
+
   return (
     <PlayerContext.Provider
       value={{
-        currentTrack, queue, currentIndex, isPlaying, currentTime, duration, volume,
-        playTrack, togglePlay, next, prev, seek, setVolume,
+        currentTrack, queue, currentIndex, isPlaying, currentTime, duration, volume, history,
+        playTrack, togglePlay, next, prev, seek, setVolume, clearHistory,
       }}
     >
       {children}
