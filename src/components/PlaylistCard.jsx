@@ -1,5 +1,6 @@
 import React from 'react';
 import { Play, Music } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Image } from '@/components/ui/image';
 import { useLanguage, localize } from '@/lib/i18n';
 import { usePlayer } from '@/lib/PlayerContext';
@@ -9,12 +10,17 @@ export default function PlaylistCard({ playlist, tracks }) {
   const { playTrack } = usePlayer();
   const genreTracks = tracks.filter((tr) => tr.genre === playlist.genre);
 
-  const handlePlay = () => {
+  const handlePlay = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (genreTracks.length) playTrack(genreTracks[0], genreTracks);
   };
 
   return (
-    <div className="group relative rounded-2xl overflow-hidden bg-card border border-border w-full max-w-sm">
+    <Link
+      to={`/playlist-details?genre=${playlist.genre}`}
+      className="group relative rounded-2xl overflow-hidden bg-card border border-border w-full max-w-sm block hover:border-primary/50 transition-colors"
+    >
       <div className="relative aspect-square">
         {playlist.cover_url ? (
           <Image src={playlist.cover_url} alt={localize(lang, playlist, 'title')} className="w-full h-full object-cover" />
@@ -39,6 +45,6 @@ export default function PlaylistCard({ playlist, tracks }) {
           {t(`genre.${playlist.genre}`)}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

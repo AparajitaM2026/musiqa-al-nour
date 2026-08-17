@@ -9,6 +9,7 @@ import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { LanguageProvider } from '@/lib/i18n';
 import { PlayerProvider } from '@/lib/PlayerContext';
+import { ThemeProvider } from '@/lib/theme';
 import Layout from '@/components/Layout';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
@@ -21,6 +22,9 @@ import Profile from '@/pages/Profile';
 import TermsOfService from '@/pages/TermsOfService';
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import DMCA from '@/pages/DMCA';
+import PlaylistDetails from '@/pages/PlaylistDetails';
+import History from '@/pages/History';
+import AccountSettings from '@/pages/AccountSettings';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -52,11 +56,14 @@ const AuthenticatedApp = () => {
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
         <Route path="/library" element={<Library />} />
+        <Route path="/playlist-details" element={<PlaylistDetails />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/dmca" element={<DMCA />} />
         <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/account-settings" element={<AccountSettings />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />
@@ -70,6 +77,7 @@ function App() {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
+        <ThemeProvider>
         <LanguageProvider>
           <PlayerProvider>
             <Router>
@@ -79,6 +87,7 @@ function App() {
             <Toaster />
           </PlayerProvider>
         </LanguageProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </AuthProvider>
   )

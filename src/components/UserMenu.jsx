@@ -7,7 +7,7 @@ import {
   DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,
   DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { User, CreditCard, LogOut, ChevronDown } from 'lucide-react';
+import { User, History, Settings, LogOut, ChevronDown } from 'lucide-react';
 
 export default function UserMenu() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -55,6 +55,14 @@ export default function UserMenu() {
         <DropdownMenuItem onClick={() => navigate('/profile')}>
           <User className="w-4 h-4" />
           {t('menu.myAccount')}
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => navigate('/history')}>
+          <History className="w-4 h-4" />
+          {t('menu.history')}
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => navigate('/account-settings')}>
+          <Settings className="w-4 h-4" />
+          {t('menu.accountSettings')}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => logout()} className="text-destructive focus:text-destructive">
