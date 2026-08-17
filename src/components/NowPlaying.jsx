@@ -5,7 +5,8 @@ import { useLanguage, localize } from '@/lib/i18n';
 import { useTrackInfo } from '@/components/TrackInfoModalProvider';
 import { Image } from '@/components/ui/image';
 import { cn } from '@/lib/utils';
-import { ChevronDown, Shuffle, SkipBack, Play, Pause, SkipForward, Repeat, Music, Info } from 'lucide-react';
+import { useFavorites } from '@/lib/useFavorites';
+import { ChevronDown, Shuffle, SkipBack, Play, Pause, SkipForward, Repeat, Music, Info, Heart } from 'lucide-react';
 
 export default function NowPlaying({ onClose }) {
   const { t, lang, dir } = useLanguage();
@@ -14,6 +15,8 @@ export default function NowPlaying({ onClose }) {
     queue, currentIndex, shuffle, setShuffle, repeat, setRepeat, playTrack,
   } = usePlayer();
   const { openTrackInfo } = useTrackInfo();
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const isFav = currentTrack ? isFavorite(currentTrack.id) : false;
   const [tab, setTab] = useState('lyrics');
   const sliderRef = useRef(null);
   const progress = duration ? (currentTime / duration) * 100 : 0;
@@ -46,9 +49,14 @@ export default function NowPlaying({ onClose }) {
           <ChevronDown className="w-6 h-6" />
         </button>
         <div className="text-xs uppercase tracking-wider text-muted-foreground">{t('player.nowPlaying')}</div>
-        <button onClick={() => openTrackInfo(currentTrack)} className="text-muted-foreground hover:text-foreground p-2" aria-label={t('trackinfo.info')}>
-          <Info className="w-5 h-5" />
-        </button>
+        <div className="flex items-center">
+          <button onClick={() => toggleFavorite(currentTrack.id)} className={cn('p-2 transition-colors', isFav ? 'text-red-500' : 'text-muted-foreground hover:text-foreground')} aria-label={t('trackinfo.favorite')}>
+            <Heart className={cn('w-5 h-5', isFav && 'fill-current')} />
+          </button>
+          <button onClick={() => openTrackInfo(currentTrack)} className="text-muted-foreground hover:text-foreground p-2" aria-label={t('trackinfo.info')}>
+            <Info className="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center gap-4 min-h-0">

@@ -1,15 +1,19 @@
 import React from 'react';
-import { Play, Pause, Info } from 'lucide-react';
+import { Play, Pause, Info, Heart } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { usePlayer, formatTime } from '@/lib/PlayerContext';
 import { useLanguage, localize } from '@/lib/i18n';
 import { useTrackInfo } from '@/components/TrackInfoModalProvider';
+import { cn } from '@/lib/utils';
+import { useFavorites } from '@/lib/useFavorites';
 import { Link } from 'react-router-dom';
 
 export default function TrackRow({ track, queue, index }) {
   const { playTrack, currentTrack, isPlaying, togglePlay } = usePlayer();
   const { lang, t } = useLanguage();
   const { openTrackInfo } = useTrackInfo();
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const isFav = isFavorite(track.id);
   const isCurrent = currentTrack?.id === track.id;
   const showPause = isCurrent && isPlaying;
 
@@ -40,6 +44,13 @@ export default function TrackRow({ track, queue, index }) {
         </Link>
       </div>
       <div className="text-xs text-muted-foreground tabular-nums hidden sm:block">{formatTime(track.duration)}</div>
+      <button
+        onClick={(e) => { e.stopPropagation(); toggleFavorite(track.id); }}
+        className={cn('p-1 transition-opacity', isFav ? 'text-red-500 opacity-100' : 'text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100')}
+        aria-label={t('trackinfo.favorite')}
+      >
+        <Heart className={cn('w-4 h-4', isFav && 'fill-current')} />
+      </button>
       <button
         onClick={(e) => { e.stopPropagation(); openTrackInfo(track); }}
         className="text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity p-1"
