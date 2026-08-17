@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Search, Library, Heart } from 'lucide-react';
+import { Home, Search, Library, Heart, TrendingUp } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
@@ -8,6 +8,7 @@ const items = [
   { to: '/', key: 'nav.home', icon: Home },
   { to: '/search', key: 'nav.search', icon: Search },
   { to: '/library', key: 'nav.library', icon: Library },
+  { to: '/trending', key: 'nav.trending', icon: TrendingUp },
 ];
 
 export default function Sidebar() {

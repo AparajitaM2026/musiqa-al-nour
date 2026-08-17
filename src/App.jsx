@@ -23,6 +23,8 @@ import TermsOfService from '@/pages/TermsOfService';
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import DMCA from '@/pages/DMCA';
 import PlaylistDetails from '@/pages/PlaylistDetails';
+import AlbumDetails from '@/pages/AlbumDetails';
+import Trending from '@/pages/Trending';
 import History from '@/pages/History';
 import AccountSettings from '@/pages/AccountSettings';
 
@@ -57,6 +59,8 @@ const AuthenticatedApp = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/library" element={<Library />} />
         <Route path="/playlist-details" element={<PlaylistDetails />} />
+        <Route path="/album-details" element={<AlbumDetails />} />
+        <Route path="/trending" element={<Trending />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/dmca" element={<DMCA />} />

@@ -101,6 +101,11 @@ const translations = {
     'account.themeLight': 'Light',
     'account.themeDark': 'Dark',
     'history.clear': 'Clear history',
+    'nav.trending': 'Trending',
+    'trending.title': 'Trending Now',
+    'trending.subtitle': 'Most played across the Naghma community',
+    'trending.topTracks': 'Top Tracks',
+    'trending.topArtists': 'Top Artists',
   },
   ar: {
     appName: 'نغمة',
@@ -202,6 +207,11 @@ const translations = {
     'account.themeLight': 'فاتح',
     'account.themeDark': 'داكن',
     'history.clear': 'مسح السجل',
+    'nav.trending': 'الأكثر رواجاً',
+    'trending.title': 'الأكثر رواجاً الآن',
+    'trending.subtitle': 'الأكثر تشغيلاً في مجتمع نغمة',
+    'trending.topTracks': 'الأغاني الأكثر استماعاً',
+    'trending.topArtists': 'أبرز الفنانين',
   },
 };
 
