@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useLanguage } from '@/lib/i18n';
 import { useFollows } from '@/lib/FollowContext';
@@ -103,8 +104,13 @@ export default function Home() {
 
       {playlists.length > 0 && (
         <section>
-          <h2 className="text-xl font-bold mb-4">{t('home.featuredPlaylists')}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold">{t('home.featuredPlaylists')}</h2>
+            <Link to="/library" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              {t('home.showAll')}
+            </Link>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-2">
             {playlists.map((pl) => (
               <PlaylistCard key={pl.id} playlist={pl} tracks={tracks} />
             ))}
