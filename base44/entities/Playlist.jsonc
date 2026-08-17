@@ -1,0 +1,40 @@
+{
+  "name": "Playlist",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "title_ar": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "description_ar": {
+      "type": "string"
+    },
+    "cover_url": {
+      "type": "string"
+    },
+    "genre": {
+      "type": "string",
+      "enum": [
+        "khaliji",
+        "swahili",
+        "egyptian",
+        "other"
+      ],
+      "default": "other"
+    },
+    "track_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

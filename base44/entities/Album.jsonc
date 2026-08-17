@@ -1,0 +1,37 @@
+{
+  "name": "Album",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "title_ar": {
+      "type": "string"
+    },
+    "artist": {
+      "type": "string"
+    },
+    "artist_ar": {
+      "type": "string"
+    },
+    "cover_url": {
+      "type": "string"
+    },
+    "release_year": {
+      "type": "number"
+    },
+    "genre": {
+      "type": "string",
+      "enum": [
+        "khaliji",
+        "swahili",
+        "egyptian",
+        "other"
+      ],
+      "default": "other"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

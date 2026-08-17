@@ -1,0 +1,60 @@
+{
+  "name": "Track",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "title_ar": {
+      "type": "string"
+    },
+    "artist": {
+      "type": "string"
+    },
+    "artist_ar": {
+      "type": "string"
+    },
+    "album": {
+      "type": "string"
+    },
+    "album_ar": {
+      "type": "string"
+    },
+    "cover_url": {
+      "type": "string"
+    },
+    "audio_url": {
+      "type": "string"
+    },
+    "duration": {
+      "type": "number",
+      "default": 0
+    },
+    "genre": {
+      "type": "string",
+      "enum": [
+        "khaliji",
+        "swahili",
+        "egyptian",
+        "other"
+      ],
+      "default": "other"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "ar",
+        "en"
+      ],
+      "default": "ar"
+    },
+    "plays": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title",
+    "audio_url"
+  ]
+}
