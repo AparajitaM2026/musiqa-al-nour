@@ -70,17 +70,6 @@ export default function Home() {
         </section>
       )}
 
-      {playlists.length > 0 && (
-        <section>
-          <h2 className="text-xl font-bold mb-4">{t('home.featuredPlaylists')}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {playlists.map((pl) => (
-              <PlaylistCard key={pl.id} playlist={pl} tracks={tracks} />
-            ))}
-          </div>
-        </section>
-      )}
-
       <section>
         <h2 className="text-xl font-bold mb-4">{t('home.popularTracks')}</h2>
         <div className="flex gap-4 overflow-x-auto pb-2">
@@ -107,6 +96,17 @@ export default function Home() {
           <div className="flex gap-4 overflow-x-auto pb-2">
             {albums.map((al) => (
               <AlbumCard key={al.id} album={al} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {playlists.length > 0 && (
+        <section>
+          <h2 className="text-xl font-bold mb-4">{t('home.featuredPlaylists')}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {playlists.map((pl) => (
+              <PlaylistCard key={pl.id} playlist={pl} tracks={tracks} />
             ))}
           </div>
         </section>
