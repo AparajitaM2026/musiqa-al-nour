@@ -12,6 +12,7 @@ import LanguageToggle from '@/components/LanguageToggle';
 import UserMenu from '@/components/UserMenu';
 import Footer from '@/components/Footer';
 import { TrackInfoModalProvider } from '@/components/TrackInfoModalProvider';
+import { NowPlayingProvider } from '@/components/NowPlayingProvider';
 import { usePlayer } from '@/lib/PlayerContext';
 
 export default function Layout() {
@@ -19,6 +20,7 @@ export default function Layout() {
   const { currentTrack, showAuthGate, closeAuthGate } = usePlayer();
   return (
     <TrackInfoModalProvider>
+    <NowPlayingProvider>
     <div dir={dir} className="min-h-screen bg-background text-foreground flex flex-col">
       <header className="sticky top-0 z-30 h-16 border-b border-border bg-background/80 backdrop-blur flex items-center justify-between px-4 md:px-6">
         <Link to="/" className="flex items-center gap-2 font-bold text-lg">
@@ -46,6 +48,7 @@ export default function Layout() {
       <MobileNav />
       <AuthGateModal open={showAuthGate} onClose={closeAuthGate} />
     </div>
+    </NowPlayingProvider>
     </TrackInfoModalProvider>
   );
 }

@@ -16,20 +16,30 @@ export function PlayerProvider({ children }) {
     try { return JSON.parse(localStorage.getItem('naghma-history') || '[]'); } catch { return []; }
   });
   const [showAuthGate, setShowAuthGate] = useState(false);
+  const [shuffle, setShuffle] = useState(false);
+  const [repeat, setRepeat] = useState(false);
 
   const next = useCallback(() => {
     setCurrentIndex((prev) => {
       const len = queue.length;
       if (!len) return prev;
-      const ni = (prev + 1) % len;
-      const audio = audioRef.current;
-      if (audio && queue[ni]) {
-        audio.src = queue[ni].audio_url;
-        audio.play().catch(() => {});
+      let ni;
+      if (shuffle && len > 1) {
+        do { ni = Math.floor(Math.random() * len); } while (ni === prev);
+      } else {
+        ni = prev + 1;
+        if (ni >= len) ni = repeat ? 0 : prev;
+      }
+      if (ni !== prev) {
+        const audio = audioRef.current;
+        if (audio && queue[ni]) {
+          audio.src = queue[ni].audio_url;
+          audio.play().catch(() => {});
+        }
       }
       return ni;
     });
-  }, [queue]);
+  }, [queue, shuffle, repeat]);
 
   const nextRef = useRef(() => {});
   nextRef.current = next;
@@ -126,6 +136,7 @@ export function PlayerProvider({ children }) {
         currentTrack, queue, currentIndex, isPlaying, currentTime, duration, volume, history,
         showAuthGate, closeAuthGate: () => setShowAuthGate(false),
         playTrack, togglePlay, next, prev, seek, setVolume, clearHistory,
+        shuffle, setShuffle, repeat, setRepeat,
       }}
     >
       {children}

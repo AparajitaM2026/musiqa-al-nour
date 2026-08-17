@@ -135,6 +135,9 @@ const translations = {
     'trackinfo.album': 'Album',
     'trackinfo.genre': 'Genre',
     'trackinfo.audioSpecs': 'Audio Specs',
+    'nowplaying.upNext': 'Up Next',
+    'nowplaying.lyrics': 'Lyrics',
+    'nowplaying.noLyrics': 'Lyrics not available for this track.',
   },
   ar: {
     appName: 'نغمة',
@@ -270,6 +273,9 @@ const translations = {
     'trackinfo.album': 'الألبوم',
     'trackinfo.genre': 'النوع',
     'trackinfo.audioSpecs': 'مواصفات الصوت',
+    'nowplaying.upNext': 'التالي',
+    'nowplaying.lyrics': 'الكلمات',
+    'nowplaying.noLyrics': 'الكلمات غير متوفرة لهذه الأغنية.',
   },
 };
 
