@@ -13,7 +13,10 @@ export default function HeroBanner({ item, tracks }) {
   const handlePlay = () => {
     if (queue.length) playTrack(queue[0], queue);
   };
-  const subtitle = localize(lang, item, 'description') || (item.genre ? t(`genre.${item.genre}`) : '');
+  const genreKey = item.genre ? `genre.${item.genre}` : '';
+  const genreTranslated = genreKey ? t(genreKey) : '';
+  const genreDisplay = genreTranslated && genreTranslated !== genreKey ? genreTranslated : (item.genre || '');
+  const subtitle = localize(lang, item, 'description') || genreDisplay;
 
   return (
     <div className="relative rounded-2xl overflow-hidden h-60 md:h-80">
