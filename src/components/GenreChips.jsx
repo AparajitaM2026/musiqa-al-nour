@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 const CHIPS = [
   'all',
-  'islamic_spiritual',
+  'arabic_faith_and_melodies',
   'khaleeji',
   'kurdish',
   'patriotic',
