@@ -26,7 +26,9 @@ export default function TrackInfoModal({ track, onClose }) {
   const title = localize(lang, track, 'title');
   const artist = localize(lang, track, 'artist') || 'N/A';
   const album = localize(lang, track, 'album');
-  const genre = track.genre ? t(`genre.${track.genre}`) : 'N/A';
+  const genre = localize(lang, track, 'genre') || 'N/A';
+  const composer = localize(lang, track, 'composer') || 'N/A';
+  const lyricist = localize(lang, track, 'lyricist') || 'N/A';
 
   const share = async () => {
     const url = `${window.location.origin}/?track=${track.id}`;
@@ -72,8 +74,8 @@ export default function TrackInfoModal({ track, onClose }) {
           </div>
           <div className="flex-1 space-y-2">
             {renderRow(t('trackinfo.singer'), artist)}
-            {renderRow(t('trackinfo.composer'), track.composer || 'N/A')}
-            {renderRow(t('trackinfo.lyricist'), track.lyricist || 'N/A')}
+            {renderRow(t('trackinfo.composer'), composer)}
+            {renderRow(t('trackinfo.lyricist'), lyricist)}
           </div>
         </div>
 

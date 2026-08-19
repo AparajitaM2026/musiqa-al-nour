@@ -33,7 +33,13 @@
     "genre": {
       "type": "string"
     },
+    "genre_ar": {
+      "type": "string"
+    },
     "playlist": {
+      "type": "string"
+    },
+    "playlist_ar": {
       "type": "string"
     },
     "language": {
@@ -51,7 +57,13 @@
     "composer": {
       "type": "string"
     },
+    "composer_ar": {
+      "type": "string"
+    },
     "lyricist": {
+      "type": "string"
+    },
+    "lyricist_ar": {
       "type": "string"
     },
     "label": {
