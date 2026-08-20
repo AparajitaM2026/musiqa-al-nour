@@ -86,8 +86,10 @@
     @apply border-border outline-ring/50;
   }
 
+  html,
   body {
     @apply bg-background text-foreground font-body;
+    overscroll-behavior: none;
   }
 
   /* Prevent text selection on interactive controls for a native-app feel */

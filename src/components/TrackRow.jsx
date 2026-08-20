@@ -46,14 +46,14 @@ export default function TrackRow({ track, queue, index }) {
       <div className="text-xs text-muted-foreground tabular-nums hidden sm:block">{formatTime(track.duration)}</div>
       <button
         onClick={(e) => { e.stopPropagation(); toggleFavorite(track.id); }}
-        className={cn('p-1 transition-opacity', isFav ? 'text-red-500 opacity-100' : 'text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100')}
+        className={cn('p-1 transition-opacity', isFav ? 'text-red-500 opacity-100' : 'text-muted-foreground hover:text-foreground opacity-100 sm:opacity-0 sm:group-hover:opacity-100')}
         aria-label={t('trackinfo.favorite')}
       >
         <Heart className={cn('w-4 h-4', isFav && 'fill-current')} />
       </button>
       <button
         onClick={(e) => { e.stopPropagation(); openTrackInfo(track); }}
-        className="text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity p-1"
+        className="text-muted-foreground hover:text-foreground opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity p-1"
         aria-label={t('trackinfo.info')}
       >
         <Info className="w-4 h-4" />

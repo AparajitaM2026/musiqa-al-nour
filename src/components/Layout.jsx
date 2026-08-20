@@ -16,20 +16,20 @@ import { NowPlayingProvider } from '@/components/NowPlayingProvider';
 import { FollowProvider } from '@/lib/FollowContext';
 import { usePlayer } from '@/lib/PlayerContext';
 
-const SUB_ROUTES = ['/playlist-details', '/album-details', '/artist-profile'];
+const ROOT_TABS = ['/', '/search', '/library', '/trending', '/favorites', '/profile'];
 
 export default function Layout() {
   const { dir, t } = useLanguage();
   const { currentTrack, showAuthGate, closeAuthGate } = usePlayer();
   const location = useLocation();
   const navigate = useNavigate();
-  const showBack = SUB_ROUTES.includes(location.pathname);
+  const showBack = !ROOT_TABS.includes(location.pathname);
   return (
     <TrackInfoModalProvider>
     <NowPlayingProvider>
     <FollowProvider>
     <div dir={dir} className="min-h-screen bg-background text-foreground flex flex-col">
-      <header className="sticky top-0 z-30 h-16 border-b border-border bg-background/80 backdrop-blur flex items-center justify-between px-4 md:px-6">
+      <header className="sticky top-0 z-30 h-16 border-b border-border bg-background/80 backdrop-blur flex items-center justify-between px-4 md:px-6 pt-[env(safe-area-inset-top,0px)]">
         <div className="flex items-center gap-2">
           {showBack && (
             <button
