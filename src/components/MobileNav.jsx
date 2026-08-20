@@ -27,7 +27,7 @@ export default function MobileNav() {
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-40 h-16 bg-background/95 backdrop-blur border-t border-border flex md:hidden"
+      className="fixed bottom-0 inset-x-0 z-40 min-h-16 h-auto py-2 pb-[calc(env(safe-area-inset-bottom,16px)-8px)] bg-background/95 backdrop-blur border-t border-border flex md:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 16px)' }}
     >
       {items.map(({ to, key, icon: Icon }) => (
@@ -38,7 +38,7 @@ export default function MobileNav() {
           onClick={(e) => handleTap(e, to)}
           className={({ isActive }) =>
             cn(
-              'flex-1 flex flex-col items-center justify-center gap-1 text-[10px] font-medium transition-colors',
+              'flex-1 flex flex-col items-center justify-center gap-1 text-xs font-medium transition-colors',
               isActive ? 'text-primary' : 'text-muted-foreground'
             )
           }
