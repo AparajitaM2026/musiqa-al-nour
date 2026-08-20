@@ -16,7 +16,10 @@ const items = [
 export default function MobileNav() {
   const { t } = useLanguage();
   return (
-    <nav className="fixed bottom-0 inset-x-0 z-40 h-16 bg-background/95 backdrop-blur border-t border-border flex md:hidden">
+    <nav
+      className="fixed bottom-0 inset-x-0 z-40 h-16 bg-background/95 backdrop-blur border-t border-border flex md:hidden"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom, 16px)' }}
+    >
       {items.map(({ to, key, icon: Icon }) => (
         <NavLink
           key={to}

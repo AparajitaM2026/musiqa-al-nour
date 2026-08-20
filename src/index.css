@@ -89,4 +89,20 @@
   body {
     @apply bg-background text-foreground font-body;
   }
+
+  /* Prevent text selection on interactive controls for a native-app feel */
+  button,
+  a,
+  nav,
+  [role="tab"],
+  [role="button"] {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Disable rubber-band / overscroll bounce on primary scroll regions */
+  main,
+  [data-scroll-area] {
+    overscroll-behavior-y: none;
+  }
 }
