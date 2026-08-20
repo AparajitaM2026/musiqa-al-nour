@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 export default function ArtistCard({ artist }) {
   const { lang, t } = useLanguage();
   return (
-    <Link to={`/artist-profile?id=${artist.id}`} className="group shrink-0 w-36 text-center">
+    <Link to={`/artist-profile?id=${artist.id}`} className="group shrink-0 w-36 text-center active:scale-95 transition-transform duration-100">
       <div className="aspect-square rounded-full overflow-hidden bg-muted mb-2 mx-auto">
         <Image
           src={artist.image_url}

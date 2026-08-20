@@ -20,7 +20,7 @@ export default function TrackRow({ track, queue, index }) {
   return (
     <div
       onClick={() => (isCurrent ? togglePlay() : playTrack(track, queue))}
-      className="group flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-muted/60 cursor-pointer transition-colors"
+      className="group flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-muted/60 cursor-pointer transition-[color,background-color,transform] duration-100 active:scale-95"
     >
       <div className="w-6 text-center text-sm text-muted-foreground tabular-nums">
         <span className="group-hover:hidden">{index + 1}</span>

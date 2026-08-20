@@ -10,6 +10,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { LanguageProvider } from '@/lib/i18n';
 import { PlayerProvider } from '@/lib/PlayerContext';
 import { ThemeProvider } from '@/lib/theme';
+import { TabNavigationProvider } from '@/lib/TabNavigationContext';
 import Layout from '@/components/Layout';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
@@ -92,7 +93,9 @@ function App() {
           <PlayerProvider>
             <Router>
               <ScrollToTop />
-              <AuthenticatedApp />
+              <TabNavigationProvider>
+                <AuthenticatedApp />
+              </TabNavigationProvider>
             </Router>
             <Toaster />
           </PlayerProvider>
