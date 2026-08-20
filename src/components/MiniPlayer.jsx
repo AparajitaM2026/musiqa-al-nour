@@ -14,10 +14,7 @@ export default function MiniPlayer() {
   if (!currentTrack) return null;
 
   return (
-    <div
-      className="fixed inset-x-0 bottom-16 z-40 md:hidden px-2"
-      style={{ paddingBottom: 'env(safe-area-inset-bottom, 16px)' }}
-    >
+    <div className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom,0px))] z-40 md:hidden px-2">
       <div onClick={() => openNowPlaying()} className="flex items-center gap-3 rounded-xl border border-border bg-background/95 backdrop-blur shadow-lg p-2 cursor-pointer">
         <div className="w-10 h-10 rounded-md overflow-hidden shrink-0 bg-muted">
           <Image src={currentTrack.cover_url} alt="" className="w-full h-full object-cover" />

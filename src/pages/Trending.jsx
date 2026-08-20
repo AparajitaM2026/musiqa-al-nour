@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import PullToRefresh from '@/components/PullToRefresh';
 import { base44 } from '@/api/base44Client';
 import { useLanguage } from '@/lib/i18n';
 import { Loader2, Flame } from 'lucide-react';
@@ -11,23 +12,25 @@ export default function Trending() {
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [tr, ar] = await Promise.all([
-          base44.entities.Track.list(),
-          base44.entities.Artist.list(),
-        ]);
-        setTracks([...tr].sort((a, b) => (b.plays || 0) - (a.plays || 0)).slice(0, 10));
-        setArtists(
-          [...ar].sort((a, b) => (b.monthly_listeners || 0) - (a.monthly_listeners || 0)).slice(0, 6)
-        );
-      } catch (e) {
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const load = useCallback(async () => {
+    try {
+      const [tr, ar] = await Promise.all([
+        base44.entities.Track.list(),
+        base44.entities.Artist.list(),
+      ]);
+      setTracks([...tr].sort((a, b) => (b.plays || 0) - (a.plays || 0)).slice(0, 10));
+      setArtists(
+        [...ar].sort((a, b) => (b.monthly_listeners || 0) - (a.monthly_listeners || 0)).slice(0, 6)
+      );
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   if (loading) {
     return (
@@ -38,6 +41,7 @@ export default function Trending() {
   }
 
   return (
+    <PullToRefresh onRefresh={load}>
     <div className="px-4 md:px-8 py-6 space-y-10">
       <div>
         <h1 className="text-3xl font-bold flex items-center gap-2">
@@ -64,5 +68,6 @@ export default function Trending() {
         </div>
       </section>
     </div>
+    </PullToRefresh>
   );
 }

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import PullToRefresh from '@/components/PullToRefresh';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useLanguage } from '@/lib/i18n';
@@ -23,26 +24,28 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [genre, setGenre] = useState('all');
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [tr, ar, al, pl] = await Promise.all([
-          base44.entities.Track.list('-plays', 20),
-          base44.entities.Artist.list('-monthly_listeners', 10),
-          base44.entities.Album.list(),
-          base44.entities.Playlist.list(),
-        ]);
-        setTracks(tr);
-        setArtists(ar);
-        setAlbums(al);
-        setPlaylists(pl);
-      } catch (e) {
-        // ignore
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const load = useCallback(async () => {
+    try {
+      const [tr, ar, al, pl] = await Promise.all([
+        base44.entities.Track.list('-plays', 20),
+        base44.entities.Artist.list('-monthly_listeners', 10),
+        base44.entities.Album.list(),
+        base44.entities.Playlist.list(),
+      ]);
+      setTracks(tr);
+      setArtists(ar);
+      setAlbums(al);
+      setPlaylists(pl);
+    } catch (e) {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   if (loading) {
     return (
@@ -61,6 +64,7 @@ export default function Home() {
   const followedTracks = tracks.filter((tr) => follows.includes(tr.artist));
 
   return (
+    <PullToRefresh onRefresh={load}>
     <div className="px-4 md:px-8 py-6 space-y-10">
       <div>
         <h1 className="text-2xl md:text-3xl font-bold">
@@ -137,5 +141,6 @@ export default function Home() {
         </section>
       )}
     </div>
+    </PullToRefresh>
   );
 }

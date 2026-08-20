@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import PullToRefresh from '@/components/PullToRefresh';
 import { base44 } from '@/api/base44Client';
 import { useLanguage, localize } from '@/lib/i18n';
 import { Loader2, Music } from 'lucide-react';
@@ -16,21 +17,23 @@ export default function Library() {
     [playlists]
   );
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [tr, pl] = await Promise.all([
-          base44.entities.Track.list(),
-          base44.entities.Playlist.list(),
-        ]);
-        setTracks(tr);
-        setPlaylists(pl);
-      } catch (e) {
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const load = useCallback(async () => {
+    try {
+      const [tr, pl] = await Promise.all([
+        base44.entities.Track.list(),
+        base44.entities.Playlist.list(),
+      ]);
+      setTracks(tr);
+      setPlaylists(pl);
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   if (loading) {
     return (
@@ -41,6 +44,7 @@ export default function Library() {
   }
 
   return (
+    <PullToRefresh onRefresh={load}>
     <div className="px-4 md:px-8 py-6 space-y-8">
       <h1 className="text-2xl font-bold">{t('library.title')}</h1>
 
@@ -69,5 +73,6 @@ export default function Library() {
         )}
       </section>
     </div>
+    </PullToRefresh>
   );
 }

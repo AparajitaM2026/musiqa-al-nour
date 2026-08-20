@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import PullToRefresh from '@/components/PullToRefresh';
 import { base44 } from '@/api/base44Client';
 import { useLanguage, localize } from '@/lib/i18n';
 import { Search as SearchIcon, Loader2 } from 'lucide-react';
@@ -30,25 +31,27 @@ export default function Search() {
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [tr, ar, al, pl] = await Promise.all([
-          base44.entities.Track.list(),
-          base44.entities.Artist.list(),
-          base44.entities.Album.list(),
-          base44.entities.Playlist.list(),
-        ]);
-        setTracks(tr);
-        setArtists(ar);
-        setAlbums(al);
-        setPlaylists(pl);
-      } catch (e) {
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const load = useCallback(async () => {
+    try {
+      const [tr, ar, al, pl] = await Promise.all([
+        base44.entities.Track.list(),
+        base44.entities.Artist.list(),
+        base44.entities.Album.list(),
+        base44.entities.Playlist.list(),
+      ]);
+      setTracks(tr);
+      setArtists(ar);
+      setAlbums(al);
+      setPlaylists(pl);
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const fTracks = useMemo(
     () => tracks.filter((o) => matches(q, o, ['title', 'title_ar', 'artist', 'artist_ar'])),
@@ -70,6 +73,7 @@ export default function Search() {
   const hasResults = fTracks.length || fArtists.length || fAlbums.length || fPlaylists.length;
 
   return (
+    <PullToRefresh onRefresh={load}>
     <div className="px-4 md:px-8 py-6 space-y-6">
       <h1 className="text-2xl font-bold">{t('search.title')}</h1>
       <div className="relative max-w-xl">
@@ -148,5 +152,6 @@ export default function Search() {
         </div>
       )}
     </div>
+    </PullToRefresh>
   );
 }

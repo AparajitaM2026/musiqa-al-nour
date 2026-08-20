@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Home, Search, Library, User, TrendingUp, Heart } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
@@ -15,6 +15,16 @@ const items = [
 
 export default function MobileNav() {
   const { t } = useLanguage();
+  const { pathname } = useLocation();
+
+  const handleTap = (e, to) => {
+    if (pathname !== to) return;
+    e.preventDefault();
+    const sc = document.querySelector('main');
+    if (sc) sc.scrollTo({ top: 0, behavior: 'smooth' });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <nav
       className="fixed bottom-0 inset-x-0 z-40 h-16 bg-background/95 backdrop-blur border-t border-border flex md:hidden"
@@ -25,6 +35,7 @@ export default function MobileNav() {
           key={to}
           to={to}
           end={to === '/'}
+          onClick={(e) => handleTap(e, to)}
           className={({ isActive }) =>
             cn(
               'flex-1 flex flex-col items-center justify-center gap-1 text-[10px] font-medium transition-colors',

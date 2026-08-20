@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import PullToRefresh from '@/components/PullToRefresh';
 import { base44 } from '@/api/base44Client';
 import { useLanguage } from '@/lib/i18n';
 import { usePlayer } from '@/lib/PlayerContext';
@@ -11,18 +12,20 @@ export default function Favorites() {
   const [tracks, setTracks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const saved = JSON.parse(localStorage.getItem('musiqa-al-nour-saved-tracks') || '[]');
-        const all = await base44.entities.Track.list();
-        setTracks(all.filter((tr) => saved.includes(tr.id)));
-      } catch (e) {
-      } finally {
-        setLoading(false);
-      }
-    })();
+  const load = useCallback(async () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('musiqa-al-nour-saved-tracks') || '[]');
+      const all = await base44.entities.Track.list();
+      setTracks(all.filter((tr) => saved.includes(tr.id)));
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   if (loading) {
     return (
@@ -33,6 +36,7 @@ export default function Favorites() {
   }
 
   return (
+    <PullToRefresh onRefresh={load}>
     <div className="px-4 md:px-8 py-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
@@ -62,5 +66,6 @@ export default function Favorites() {
         </div>
       )}
     </div>
+    </PullToRefresh>
   );
 }
