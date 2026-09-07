@@ -8,6 +8,9 @@
     "title_ar": {
       "type": "string"
     },
+    "upc": {
+      "type": "string"
+    },
     "artist": {
       "type": "string"
     },

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/lib/AuthContext';
+import { Button } from '@/components/ui/button';
 import CrudSection from '@/components/admin/CrudSection';
 import UsersAdmin from '@/components/admin/UsersAdmin';
-import { Music, Disc, Mic2, ListMusic, Users, ShieldCheck } from 'lucide-react';
+import BulkUpload from '@/components/admin/BulkUpload';
+import { Music, Disc, Mic2, ListMusic, Users, ShieldCheck, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const TABS = [
@@ -19,6 +21,7 @@ const CONFIGS = {
     title: 'Track',
     searchKeys: ['title', 'title_ar', 'artist', 'artist_ar', 'album'],
     columns: [
+      { key: 'isrc', label: 'ISRC' },
       { key: 'title', label: 'Title' },
       { key: 'artist', label: 'Artist' },
       { key: 'album', label: 'Album' },
@@ -26,6 +29,7 @@ const CONFIGS = {
       { key: 'plays', label: 'Plays' },
     ],
     fields: [
+      { key: 'isrc', label: 'ISRC' },
       { key: 'title', label: 'Title (EN)', required: true },
       { key: 'title_ar', label: 'Title (AR)' },
       { key: 'artist', label: 'Artist (EN)' },
@@ -63,12 +67,14 @@ const CONFIGS = {
     title: 'Album',
     searchKeys: ['title', 'title_ar', 'artist', 'artist_ar'],
     columns: [
+      { key: 'upc', label: 'UPC' },
       { key: 'title', label: 'Title' },
       { key: 'artist', label: 'Artist' },
       { key: 'release_year', label: 'Year' },
       { key: 'genre', label: 'Genre' },
     ],
     fields: [
+      { key: 'upc', label: 'UPC' },
       { key: 'title', label: 'Title (EN)', required: true },
       { key: 'title_ar', label: 'Title (AR)' },
       { key: 'artist', label: 'Artist (EN)' },
@@ -131,6 +137,8 @@ const CONFIGS = {
 export default function Admin() {
   const { user } = useAuth();
   const [tab, setTab] = useState('tracks');
+  const [bulkOpen, setBulkOpen] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   if (!user || user.role !== 'admin') {
     return (
@@ -147,8 +155,21 @@ export default function Admin() {
 
   return (
     <div className="px-4 md:px-8 py-6">
-      <h1 className="text-2xl md:text-3xl font-bold mb-1">Admin Dashboard</h1>
-      <p className="text-muted-foreground mb-6">Manage your music catalog and users</p>
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold mb-1">Admin Dashboard</h1>
+          <p className="text-muted-foreground">Manage your music catalog and users</p>
+        </div>
+        <Button variant="outline" onClick={() => setBulkOpen(true)}>
+          <Upload className="w-4 h-4 me-2" /> Bulk Upload
+        </Button>
+      </div>
+
+      <BulkUpload
+        open={bulkOpen}
+        onOpenChange={setBulkOpen}
+        onDone={() => setRefreshKey((k) => k + 1)}
+      />
 
       <div className="flex gap-1 overflow-x-auto pb-2 mb-6 border-b border-border">
         {TABS.map((tb) => (
@@ -172,6 +193,7 @@ export default function Admin() {
         <UsersAdmin />
       ) : (
         <CrudSection
+          key={`${tab}-${refreshKey}`}
           entityName={cfg.entity}
           title={cfg.title}
           fields={cfg.fields}
