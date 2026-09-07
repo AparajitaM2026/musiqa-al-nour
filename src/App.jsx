@@ -31,6 +31,7 @@ import Support from '@/pages/Support';
 import History from '@/pages/History';
 import AccountSettings from '@/pages/AccountSettings';
 import Favorites from '@/pages/Favorites';
+import Admin from '@/pages/Admin';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -75,6 +76,7 @@ const AuthenticatedApp = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/history" element={<History />} />
           <Route path="/account-settings" element={<AccountSettings />} />
+          <Route path="/admin" element={<Admin />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />

@@ -11,7 +11,7 @@ import {
   Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle,
 } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { User, History, Settings, LogOut, ChevronDown } from 'lucide-react';
+import { User, History, Settings, LogOut, ChevronDown, ShieldCheck } from 'lucide-react';
 
 export default function UserMenu() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -34,6 +34,7 @@ export default function UserMenu() {
   }
 
   const initial = (user?.full_name || user?.email || '?').charAt(0).toUpperCase();
+  const isAdmin = user?.role === 'admin';
 
   const trigger = (
     <button className="flex items-center gap-2 rounded-full border border-border bg-background hover:bg-muted transition-colors ps-1 pe-2 py-1">
@@ -81,6 +82,11 @@ export default function UserMenu() {
             <button onClick={() => go('/account-settings')} className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm hover:bg-accent transition-colors">
               <Settings className="w-4 h-4" /> {t('menu.accountSettings')}
             </button>
+            {isAdmin && (
+              <button onClick={() => go('/admin')} className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm hover:bg-accent transition-colors">
+                <ShieldCheck className="w-4 h-4" /> Admin
+              </button>
+            )}
             <div className="h-px bg-border my-1" />
             <button onClick={handleLogout} className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm text-destructive hover:bg-accent transition-colors">
               <LogOut className="w-4 h-4" /> {t('menu.logout')}
@@ -119,6 +125,12 @@ export default function UserMenu() {
           <Settings className="w-4 h-4" />
           {t('menu.accountSettings')}
         </DropdownMenuItem>
+        {isAdmin && (
+          <DropdownMenuItem onClick={() => navigate('/admin')}>
+            <ShieldCheck className="w-4 h-4" />
+            Admin
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => logout()} className="text-destructive focus:text-destructive">
           <LogOut className="w-4 h-4" />

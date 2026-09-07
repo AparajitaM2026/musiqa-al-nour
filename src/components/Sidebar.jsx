@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Search, Library, Heart, TrendingUp } from 'lucide-react';
+import { Home, Search, Library, Heart, TrendingUp, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n';
+import { useAuth } from '@/lib/AuthContext';
 import { cn } from '@/lib/utils';
 
 const items = [
@@ -14,6 +15,8 @@ const items = [
 
 export default function Sidebar() {
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   return (
     <aside className="hidden md:flex w-60 shrink-0 flex-col gap-1 p-4 border-e border-border bg-sidebar/40">
       <div className="px-3 py-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -47,6 +50,15 @@ export default function Sidebar() {
         <Heart className="w-5 h-5" />
         {t('library.byGenre')}
       </NavLink>
+      {isAdmin && (
+        <NavLink
+          to="/admin"
+          className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent/60"
+        >
+          <ShieldCheck className="w-5 h-5" />
+          Admin
+        </NavLink>
+      )}
     </aside>
   );
 }
