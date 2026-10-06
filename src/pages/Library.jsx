@@ -55,12 +55,8 @@ export default function Library() {
           if (!genrePlaylists.length) return null;
           return (
             <div key={g} className="mb-8">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-semibold uppercase tracking-wider px-2 py-1 rounded-full bg-primary text-primary-foreground">
-                  {t(`genre.${g}`)}
-                </span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">{t(`genre.${g}`)}</h3>
+              <div className="flex gap-4 overflow-x-auto pb-2">
                 {genrePlaylists.map((pl) => (
                   <PlaylistCard key={pl.id} playlist={pl} tracks={tracks} />
                 ))}
