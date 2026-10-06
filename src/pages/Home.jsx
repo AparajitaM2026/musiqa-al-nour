@@ -81,7 +81,7 @@ export default function Home() {
         <section>
           <h2 className="text-xl font-bold mb-4">{t('home.following')}</h2>
           {followedTracks.length > 0 ? (
-            <div className="flex gap-4 overflow-x-auto pb-2">
+            <div className="no-scrollbar flex gap-4 overflow-x-auto pb-2">
               {followedTracks.map((tr) => (
                 <TrackCard key={tr.id} track={tr} queue={followedTracks} />
               ))}
@@ -95,7 +95,7 @@ export default function Home() {
       {visibleTracks.length > 0 && (
         <section>
           <h2 className="text-xl font-bold mb-4">{t('home.popularTracks')}</h2>
-          <div className="flex gap-4 overflow-x-auto pb-2">
+          <div className="no-scrollbar flex gap-4 overflow-x-auto pb-2">
             {visibleTracks.map((tr) => (
               <TrackCard key={tr.id} track={tr} queue={visibleTracks} />
             ))}
@@ -106,7 +106,7 @@ export default function Home() {
       {visibleArtists.length > 0 && (
         <section>
           <h2 className="text-xl font-bold mb-4">{t('home.topArtists')}</h2>
-          <div className="flex gap-4 overflow-x-auto pb-2">
+          <div className="no-scrollbar flex gap-4 overflow-x-auto pb-2">
             {visibleArtists.map((ar) => (
               <ArtistCard key={ar.id} artist={ar} />
             ))}
@@ -117,7 +117,7 @@ export default function Home() {
       {visibleAlbums.length > 0 && (
         <section>
           <h2 className="text-xl font-bold mb-4">{t('home.albums')}</h2>
-          <div className="flex gap-4 overflow-x-auto pb-2">
+          <div className="no-scrollbar flex gap-4 overflow-x-auto pb-2">
             {visibleAlbums.map((al) => (
               <AlbumCard key={al.id} album={al} />
             ))}
@@ -133,9 +133,9 @@ export default function Home() {
               {t('home.showAll')}
             </Link>
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-2">
+          <div className="no-scrollbar flex gap-2 md:gap-4 overflow-x-auto pb-2">
             {visiblePlaylists.map((pl) => (
-              <PlaylistCard key={pl.id} playlist={pl} tracks={tracks} />
+              <PlaylistCard key={pl.id} playlist={pl} tracks={tracks} className="w-40 shrink-0 md:w-48" />
             ))}
           </div>
         </section>

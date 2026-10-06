@@ -108,4 +108,13 @@
   [data-scroll-area] {
     overscroll-behavior-y: none;
   }
+
+  /* Hide scrollbars on horizontal card rows for a native-app feel */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

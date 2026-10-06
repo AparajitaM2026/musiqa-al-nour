@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { Image } from '@/components/ui/image';
 import { useLanguage, localize } from '@/lib/i18n';
 import { usePlayer } from '@/lib/PlayerContext';
+import { cn } from '@/lib/utils';
 
-export default function PlaylistCard({ playlist, tracks }) {
+export default function PlaylistCard({ playlist, tracks, className }) {
   const { lang, t } = useLanguage();
   const { playTrack } = usePlayer();
   const genreTracks = tracks.filter((tr) => {
@@ -22,7 +23,7 @@ export default function PlaylistCard({ playlist, tracks }) {
   return (
     <Link
       to={`/playlist-details?id=${playlist.id}`}
-      className="group relative block w-full rounded-xl p-3 transition-colors duration-200 hover:bg-accent/60"
+      className={cn("group relative block w-full rounded-xl p-3 transition-colors duration-200 hover:bg-accent/60", className)}
     >
       <div className="relative aspect-square mb-3 rounded-lg overflow-hidden shadow-md bg-muted">
         {playlist.cover_url ? (
