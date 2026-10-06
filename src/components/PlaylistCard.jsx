@@ -18,7 +18,7 @@ export default function PlaylistCard({ playlist, tracks }) {
 
   return (
     <Link
-      to={`/playlist-details?genre=${playlist.genre}`}
+      to={`/playlist-details?id=${playlist.id}`}
       className="group relative shrink-0 block w-full max-w-[180px] rounded-xl overflow-hidden bg-card border border-border hover:border-primary/50 transition-[color,background-color,border-color,transform] duration-100 active:scale-95"
     >
       <div className="relative aspect-square">

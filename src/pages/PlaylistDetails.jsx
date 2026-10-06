@@ -12,7 +12,7 @@ export default function PlaylistDetails() {
   const { t, lang } = useLanguage();
   const { playTrack } = usePlayer();
   const [params] = useSearchParams();
-  const genre = params.get('genre') || 'other';
+  const id = params.get('id');
   const [tracks, setTracks] = useState([]);
   const [playlist, setPlaylist] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -24,14 +24,31 @@ export default function PlaylistDetails() {
           base44.entities.Track.list(),
           base44.entities.Playlist.list(),
         ]);
-        setTracks(allTracks.filter((tr) => tr.genre === genre));
-        setPlaylist(playlists.find((p) => p.genre === genre));
+        const pl = playlists.find((p) => p.id === id) || null;
+        setPlaylist(pl);
+        let plTracks = [];
+        if (pl && Array.isArray(pl.track_ids) && pl.track_ids.length) {
+          plTracks = allTracks.filter((tr) => pl.track_ids.includes(tr.id));
+        }
+        if (!plTracks.length && pl) {
+          const name = String(localize(lang, pl, 'title') || '').trim().toLowerCase();
+          if (name) {
+            plTracks = allTracks.filter((tr) => {
+              const list = String(tr.playlist || '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+              return list.includes(name);
+            });
+          }
+        }
+        if (!plTracks.length && pl?.genre) {
+          plTracks = allTracks.filter((tr) => String(tr.genre || '').trim() === String(pl.genre).trim());
+        }
+        setTracks(plTracks);
       } catch (e) {
       } finally {
         setLoading(false);
       }
     })();
-  }, [genre]);
+  }, [id, lang]);
 
   const playAll = () => {
     if (tracks.length) playTrack(tracks[0], tracks);
@@ -45,7 +62,7 @@ export default function PlaylistDetails() {
     );
   }
 
-  const title = playlist ? localize(lang, playlist, 'title') : t(`genre.${genre}`);
+  const title = playlist ? localize(lang, playlist, 'title') : t('home.featuredPlaylists');
 
   return (
     <div className="px-4 md:px-8 py-6">
