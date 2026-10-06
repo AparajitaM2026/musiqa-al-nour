@@ -44,8 +44,12 @@ export default function Library() {
 
   return (
     <PullToRefresh onRefresh={load}>
-      <div className="px-4 md:px-8 py-6 space-y-8">
-        <h1 className="text-2xl font-bold">{t('library.title')}</h1>
+      <div className="px-4 md:px-8 py-6 space-y-10">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold">{t('library.title')}</h1>
+          <p className="text-sm text-muted-foreground mt-1">{playlists.length} {t('library.playlists')}</p>
+        </div>
+
         {genres.length === 0 ? (
           <div className="text-center py-16 text-muted-foreground">{t('library.empty')}</div>
         ) : (
@@ -53,8 +57,8 @@ export default function Library() {
             const genrePlaylists = playlists.filter((p) => String(p.genre || '').trim() === g);
             return (
               <section key={g}>
-                <h2 className="text-xl font-bold mb-4">{g}</h2>
-                <div className="flex gap-4 overflow-x-auto pb-2">
+                <h2 className="text-lg md:text-xl font-bold mb-3">{g}</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-4">
                   {genrePlaylists.map((pl) => (
                     <PlaylistCard key={pl.id} playlist={pl} tracks={tracks} />
                   ))}
