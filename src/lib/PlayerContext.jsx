@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
 import { useAuth } from '@/lib/AuthContext';
+import { toast } from '@/components/ui/use-toast';
 
 const PlayerContext = createContext(null);
 
@@ -53,11 +54,17 @@ export function PlayerProvider({ children }) {
     const onEnd = () => nextRef.current();
     const onPlay = () => setIsPlaying(true);
     const onPause = () => setIsPlaying(false);
+    const onError = (e) => {
+      console.error('Audio element error:', audio.error, 'src:', audio.src);
+      toast({ title: 'Playback Error', description: `Could not load audio: ${audio.error?.message || 'Unknown error'}`, variant: 'destructive' });
+      setIsPlaying(false);
+    };
     audio.addEventListener('timeupdate', onTime);
     audio.addEventListener('loadedmetadata', onDur);
     audio.addEventListener('ended', onEnd);
     audio.addEventListener('play', onPlay);
     audio.addEventListener('pause', onPause);
+    audio.addEventListener('error', onError);
     return () => {
       audio.pause();
       audio.removeEventListener('timeupdate', onTime);
@@ -65,6 +72,7 @@ export function PlayerProvider({ children }) {
       audio.removeEventListener('ended', onEnd);
       audio.removeEventListener('play', onPlay);
       audio.removeEventListener('pause', onPause);
+      audio.removeEventListener('error', onError);
     };
   }, []);
 
@@ -80,7 +88,10 @@ export function PlayerProvider({ children }) {
     const audio = audioRef.current;
     if (audio) {
       audio.src = q[finalIdx].audio_url;
-      audio.play().catch(() => {});
+      audio.play().catch((e) => {
+        console.error('playTrack audio.play() failed:', e, 'url:', q[finalIdx].audio_url);
+        toast({ title: 'Playback Error', description: e?.message || 'Could not start playback', variant: 'destructive' });
+      });
     }
     setHistory((prev) => {
       const filtered = prev.filter((tr) => tr.id !== track.id);
