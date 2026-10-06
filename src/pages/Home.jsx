@@ -100,7 +100,12 @@ export default function Home() {
 
       {visibleTracks.length > 0 && (
         <section>
-          <h2 className="text-xl font-bold mb-4">{t('home.popularTracks')}</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold">{t('home.popularTracks')}</h2>
+            <Link to="/trending" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              {t('home.showAll')}
+            </Link>
+          </div>
           <div className="no-scrollbar flex gap-4 overflow-x-auto pb-2">
             {visibleTracks.map((tr) => (
               <TrackCard key={tr.id} track={tr} queue={visibleTracks} />
@@ -111,7 +116,12 @@ export default function Home() {
 
       {visibleArtists.length > 0 && (
         <section>
-          <h2 className="text-xl font-bold mb-4">{t('home.topArtists')}</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold">{t('home.topArtists')}</h2>
+            <Link to="/trending" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              {t('home.showAll')}
+            </Link>
+          </div>
           <div className="no-scrollbar flex gap-4 overflow-x-auto pb-2">
             {visibleArtists.map((ar) => (
               <ArtistCard key={ar.id} artist={ar} />
@@ -122,7 +132,12 @@ export default function Home() {
 
       {visibleAlbums.length > 0 && (
         <section>
-          <h2 className="text-xl font-bold mb-4">{t('home.albums')}</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold">{t('home.albums')}</h2>
+            <Link to="/search" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              {t('home.showAll')}
+            </Link>
+          </div>
           <div className="no-scrollbar flex gap-4 overflow-x-auto pb-2">
             {visibleAlbums.map((al) => (
               <AlbumCard key={al.id} album={al} />
