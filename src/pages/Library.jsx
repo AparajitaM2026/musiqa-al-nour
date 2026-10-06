@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PullToRefresh from '@/components/PullToRefresh';
 import { base44 } from '@/api/base44Client';
 import { useLanguage } from '@/lib/i18n';
@@ -29,11 +29,6 @@ export default function Library() {
     load();
   }, [load]);
 
-  const genres = useMemo(
-    () => [...new Set(playlists.map((p) => String(p.genre || '').trim()).filter(Boolean))].sort(),
-    [playlists]
-  );
-
   if (loading) {
     return (
       <div className="h-full grid place-items-center">
@@ -50,22 +45,14 @@ export default function Library() {
           <p className="text-sm text-muted-foreground mt-1">{playlists.length} {t('library.playlists')}</p>
         </div>
 
-        {genres.length === 0 ? (
+        {playlists.length === 0 ? (
           <div className="text-center py-16 text-muted-foreground">{t('library.empty')}</div>
         ) : (
-          genres.map((g) => {
-            const genrePlaylists = playlists.filter((p) => String(p.genre || '').trim() === g);
-            return (
-              <section key={g}>
-                <h2 className="text-lg md:text-xl font-bold mb-3">{g}</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-4">
-                  {genrePlaylists.map((pl) => (
-                    <PlaylistCard key={pl.id} playlist={pl} tracks={tracks} />
-                  ))}
-                </div>
-              </section>
-            );
-          })
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-4">
+            {playlists.map((pl) => (
+              <PlaylistCard key={pl.id} playlist={pl} tracks={tracks} />
+            ))}
+          </div>
         )}
       </div>
     </PullToRefresh>
