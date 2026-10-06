@@ -53,6 +53,8 @@ const TARGETS = [
   { key: 'label', label: 'Label', group: 'track', aliases: ['label', 'record label', 'record_label'] },
   { key: 'release_year', label: 'Release Year', group: 'track', aliases: ['release_year', 'year', 'release year', 'released', 'release date'] },
   { key: 'maqam_genre', label: 'Maqam', group: 'track', aliases: ['maqam_genre', 'maqam', 'maqam genre'] },
+  { key: 'playlist', label: 'Playlist(s)', group: 'track', aliases: ['playlist', 'playlists', 'playlist name', 'playlist_name'] },
+  { key: 'playlist_ar', label: 'Playlist(s) (AR)', group: 'track', aliases: ['playlist_ar', 'arabic playlist', 'playlist (arabic)'] },
   { key: 'upc', label: 'Album UPC', group: 'album', aliases: ['upc'] },
   { key: 'album', label: 'Album Title', group: 'album', aliases: ['album', 'album_title', 'album title', 'album name', 'album_name'] },
   { key: 'album_ar', label: 'Album Title (AR)', group: 'album', aliases: ['album_ar', 'arabic album', 'album (arabic)', 'album_title_ar'] },
@@ -95,9 +97,13 @@ function toNumber(v) {
   return Number.isFinite(n) ? n : null;
 }
 
+function parsePlaylists(v) {
+  return String(v || '').split(',').map((s) => s.trim()).filter(Boolean);
+}
+
 function downloadTemplate() {
-  const headers = ['isrc', 'title', 'artist', 'cover_url', 'audio_url', 'genre', 'upc', 'album', 'album_artist', 'album_cover'];
-  const sample = ['USRC12345678', 'Sample Track', 'Sample Artist', 'https://example.com/cover.jpg', 'https://example.com/audio.mp3', 'yemeni', '0123456789012', 'Sample Album', 'Sample Artist', 'https://example.com/album.jpg'];
+  const headers = ['isrc', 'title', 'artist', 'cover_url', 'audio_url', 'genre', 'playlist', 'upc', 'album', 'album_artist', 'album_cover'];
+  const sample = ['USRC12345678', 'Sample Track', 'Sample Artist', 'https://example.com/cover.jpg', 'https://example.com/audio.mp3', 'yemeni', 'Children Songs, Arabic Songs', '0123456789012', 'Sample Album', 'Sample Artist', 'https://example.com/album.jpg'];
   const csv = [headers.join(','), sample.join(',')].join('\n');
   const blob = new Blob([csv], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
@@ -209,6 +215,8 @@ export default function BulkUpload({ open, onOpenChange, onDone }) {
 
       const newTracks = [];
       const trackUpdates = [];
+      const newTrackPlaylists = [];
+      const updateTrackPlaylists = [];
       const newAlbums = [];
       const albumUpdates = [];
       const batchIsrcs = new Set();
@@ -281,23 +289,69 @@ export default function BulkUpload({ open, onOpenChange, onDone }) {
           label: get(row, 'label'),
           release_year: toNumber(get(row, 'release_year')),
           maqam_genre: get(row, 'maqam_genre'),
+          playlist: get(row, 'playlist'),
+          playlist_ar: get(row, 'playlist_ar'),
         };
         if (existing || inBatch) {
           dupTracks++;
           if (updateExisting && existing && title && audioUrl) {
             trackUpdates.push({ id: existing.id, ...baseTrack });
+            updateTrackPlaylists.push(parsePlaylists(get(row, 'playlist')));
           }
           return;
         }
         if (!title || !audioUrl) { invalidTracks++; return; }
         batchIsrcs.add(isrc);
         newTracks.push(baseTrack);
+        newTrackPlaylists.push(parsePlaylists(get(row, 'playlist')));
       });
 
       if (newAlbums.length) await base44.entities.Album.bulkCreate(newAlbums);
       if (albumUpdates.length) await base44.entities.Album.bulkUpdate(albumUpdates);
-      if (newTracks.length) await base44.entities.Track.bulkCreate(newTracks);
+      let createdTracks = [];
+      if (newTracks.length) createdTracks = await base44.entities.Track.bulkCreate(newTracks);
       if (trackUpdates.length) await base44.entities.Track.bulkUpdate(trackUpdates);
+
+      // Playlist handling: comma-separated names -> separate Playlist entities
+      let playlistsCreated = 0;
+      let playlistsUpdated = 0;
+      const allAssocs = [];
+      (createdTracks || []).forEach((t, i) => allAssocs.push({ trackId: t.id, names: newTrackPlaylists[i] || [] }));
+      trackUpdates.forEach((t, i) => allAssocs.push({ trackId: t.id, names: updateTrackPlaylists[i] || [] }));
+      if (allAssocs.some((a) => a.names.length)) {
+        const existingPlaylists = await base44.entities.Playlist.list('-created_date', 5000);
+        const playlistByTitle = new Map();
+        existingPlaylists.forEach((p) => playlistByTitle.set(String(p.title || '').trim().toLowerCase(), p));
+        const toCreate = new Map();
+        const updateMap = new Map();
+        allAssocs.forEach(({ trackId, names }) => {
+          names.forEach((name) => {
+            const key = name.toLowerCase();
+            if (playlistByTitle.has(key)) {
+              const p = playlistByTitle.get(key);
+              const existing = Array.isArray(p.track_ids) ? [...p.track_ids] : [];
+              const merged = updateMap.get(p.id) || existing;
+              if (!merged.includes(trackId)) merged.push(trackId);
+              updateMap.set(p.id, merged);
+              p.track_ids = merged;
+            } else if (toCreate.has(key)) {
+              toCreate.get(key).trackIds.add(trackId);
+            } else {
+              toCreate.set(key, { title: name, trackIds: new Set([trackId]) });
+            }
+          });
+        });
+        if (toCreate.size) {
+          const newPlaylists = [...toCreate.values()].map(({ title, trackIds }) => ({ title, track_ids: [...trackIds] }));
+          await base44.entities.Playlist.bulkCreate(newPlaylists);
+          playlistsCreated = newPlaylists.length;
+        }
+        if (updateMap.size) {
+          const updates = [...updateMap].map(([id, track_ids]) => ({ id, track_ids }));
+          await base44.entities.Playlist.bulkUpdate(updates);
+          playlistsUpdated = updates.length;
+        }
+      }
 
       setResult({
         tracksCreated: newTracks.length,
@@ -307,6 +361,8 @@ export default function BulkUpload({ open, onOpenChange, onDone }) {
         albumsCreated: newAlbums.length,
         albumsUpdated: albumUpdates.length,
         albumsExisting: existingAlbumCount - albumUpdates.length,
+        playlistsCreated,
+        playlistsUpdated,
       });
       setStage('done');
       onDone?.();
@@ -477,6 +533,14 @@ export default function BulkUpload({ open, onOpenChange, onDone }) {
               <div className="rounded-lg border border-border p-3">
                 <div className="text-2xl font-bold">{result.albumsExisting}</div>
                 <div className="text-xs text-muted-foreground">Existing albums matched</div>
+              </div>
+              <div className="rounded-lg border border-border p-3">
+                <div className="text-2xl font-bold text-green-600 dark:text-green-500">{result.playlistsCreated}</div>
+                <div className="text-xs text-muted-foreground">Playlists created</div>
+              </div>
+              <div className="rounded-lg border border-border p-3">
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-500">{result.playlistsUpdated}</div>
+                <div className="text-xs text-muted-foreground">Playlists updated</div>
               </div>
             </div>
             {result.tracksInvalid > 0 && (

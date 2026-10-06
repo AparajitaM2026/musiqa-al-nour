@@ -41,9 +41,6 @@ export default function PlaylistCard({ playlist, tracks }) {
       <div className="p-2.5">
         <div className="text-sm font-semibold truncate">{localize(lang, playlist, 'title')}</div>
         <div className="text-[11px] text-muted-foreground line-clamp-1 mt-0.5">{localize(lang, playlist, 'description')}</div>
-        <div className="mt-1.5 inline-block text-xs font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground">
-          {t(`genre.${playlist.genre}`)}
-        </div>
       </div>
     </Link>
   );
