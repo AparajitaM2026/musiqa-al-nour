@@ -66,7 +66,7 @@ export default function Home() {
   const visibleArtists = byGenre(artists);
   const visibleAlbums = byGenre(albums);
   const visiblePlaylists = byGenre(playlists);
-  const featured = playlists.find((p) => p.cover_url) || playlists[0] || albums[0];
+  const featuredSlides = playlists.filter((p) => p.cover_url).slice(0, 5);
   const followedTracks = tracks.filter((tr) => follows.includes(tr.artist));
 
   return (
@@ -79,7 +79,7 @@ export default function Home() {
         <p className="text-muted-foreground mt-1">{t('tagline')}</p>
       </div>
 
-      <HeroBanner item={featured} tracks={tracks} />
+      <HeroBanner items={featuredSlides} tracks={tracks} />
 
       <GenreChips value={genre} onChange={setGenre} playlists={playlists} />
 
