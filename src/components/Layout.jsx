@@ -10,6 +10,7 @@ import AudioPlayer from '@/components/AudioPlayer';
 import MiniPlayer from '@/components/MiniPlayer';
 import AuthGateModal from '@/components/AuthGateModal';
 import LanguageToggle from '@/components/LanguageToggle';
+import ThemeToggle from '@/components/ThemeToggle';
 import UserMenu from '@/components/UserMenu';
 import Footer from '@/components/Footer';
 import { TrackInfoModalProvider } from '@/components/TrackInfoModalProvider';
@@ -58,6 +59,7 @@ export default function Layout() {
           </Link>
         </div>
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <LanguageToggle />
           <UserMenu />
         </div>
