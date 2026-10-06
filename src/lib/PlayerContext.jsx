@@ -19,6 +19,7 @@ export function PlayerProvider({ children }) {
   const [showAuthGate, setShowAuthGate] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const [repeat, setRepeat] = useState(false);
+  const [buffering, setBuffering] = useState(false);
 
   const next = useCallback(() => {
     setCurrentIndex((prev) => {
@@ -34,8 +35,10 @@ export function PlayerProvider({ children }) {
       if (ni !== prev) {
         const audio = audioRef.current;
         if (audio && queue[ni]) {
+          setBuffering(true);
           audio.src = queue[ni].audio_url;
-          audio.play().catch(() => {});
+          audio.load();
+          audio.play().catch(() => setBuffering(false));
         }
       }
       return ni;
@@ -52,9 +55,13 @@ export function PlayerProvider({ children }) {
     const onTime = () => setCurrentTime(audio.currentTime);
     const onDur = () => setDuration(audio.duration || 0);
     const onEnd = () => nextRef.current();
-    const onPlay = () => setIsPlaying(true);
+    const onPlay = () => { setIsPlaying(true); setBuffering(false); };
     const onPause = () => setIsPlaying(false);
+    const onWaiting = () => setBuffering(true);
+    const onPlaying = () => setBuffering(false);
+    const onCanPlay = () => setBuffering(false);
     const onError = (e) => {
+      setBuffering(false);
       console.error('Audio element error:', audio.error, 'src:', audio.src);
       toast({ title: 'Playback Error', description: `Could not load audio: ${audio.error?.message || 'Unknown error'}`, variant: 'destructive' });
       setIsPlaying(false);
@@ -64,6 +71,9 @@ export function PlayerProvider({ children }) {
     audio.addEventListener('ended', onEnd);
     audio.addEventListener('play', onPlay);
     audio.addEventListener('pause', onPause);
+    audio.addEventListener('waiting', onWaiting);
+    audio.addEventListener('playing', onPlaying);
+    audio.addEventListener('canplay', onCanPlay);
     audio.addEventListener('error', onError);
     return () => {
       audio.pause();
@@ -72,6 +82,9 @@ export function PlayerProvider({ children }) {
       audio.removeEventListener('ended', onEnd);
       audio.removeEventListener('play', onPlay);
       audio.removeEventListener('pause', onPause);
+      audio.removeEventListener('waiting', onWaiting);
+      audio.removeEventListener('playing', onPlaying);
+      audio.removeEventListener('canplay', onCanPlay);
       audio.removeEventListener('error', onError);
     };
   }, []);
@@ -87,9 +100,12 @@ export function PlayerProvider({ children }) {
     setCurrentIndex(finalIdx);
     const audio = audioRef.current;
     if (audio) {
+      setBuffering(true);
       audio.src = q[finalIdx].audio_url;
+      audio.load();
       audio.play().catch((e) => {
         console.error('playTrack audio.play() failed:', e, 'url:', q[finalIdx].audio_url);
+        setBuffering(false);
         toast({ title: 'Playback Error', description: e?.message || 'Could not start playback', variant: 'destructive' });
       });
     }
@@ -116,8 +132,10 @@ export function PlayerProvider({ children }) {
       const finalIdx = ni >= 0 ? ni : len - 1;
       const audio = audioRef.current;
       if (audio && queue[finalIdx]) {
+        setBuffering(true);
         audio.src = queue[finalIdx].audio_url;
-        audio.play().catch(() => {});
+        audio.load();
+        audio.play().catch(() => setBuffering(false));
       }
       return finalIdx;
     });
@@ -144,7 +162,7 @@ export function PlayerProvider({ children }) {
   return (
     <PlayerContext.Provider
       value={{
-        currentTrack, queue, currentIndex, isPlaying, currentTime, duration, volume, history,
+        currentTrack, queue, currentIndex, isPlaying, buffering, currentTime, duration, volume, history,
         showAuthGate, closeAuthGate: () => setShowAuthGate(false),
         playTrack, togglePlay, next, prev, seek, setVolume, clearHistory,
         shuffle, setShuffle, repeat, setRepeat,

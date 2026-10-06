@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Pause, Info } from 'lucide-react';
+import { Play, Pause, Info, Loader2 } from 'lucide-react';
 import { usePlayer } from '@/lib/PlayerContext';
 import { useLanguage, localize } from '@/lib/i18n';
 import { useTrackInfo } from '@/components/TrackInfoModalProvider';
@@ -7,7 +7,7 @@ import { useNowPlaying } from '@/components/NowPlayingProvider';
 import { Image } from '@/components/ui/image';
 
 export default function MiniPlayer() {
-  const { currentTrack, isPlaying, togglePlay } = usePlayer();
+  const { currentTrack, isPlaying, buffering, togglePlay } = usePlayer();
   const { t, lang } = useLanguage();
   const { openTrackInfo } = useTrackInfo();
   const { openNowPlaying } = useNowPlaying();
@@ -27,7 +27,7 @@ export default function MiniPlayer() {
           <Info className="w-4 h-4" />
         </button>
         <button onClick={(e) => { e.stopPropagation(); togglePlay(); }} className="w-9 h-9 rounded-full bg-primary text-primary-foreground grid place-items-center shrink-0" aria-label={isPlaying ? t('player.pause') : t('player.play')}>
-          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ms-0.5" />}
+          {buffering ? <Loader2 className="w-4 h-4 animate-spin" /> : isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ms-0.5" />}
         </button>
       </div>
     </div>

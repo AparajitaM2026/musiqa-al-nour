@@ -6,12 +6,12 @@ import { useTrackInfo } from '@/components/TrackInfoModalProvider';
 import { Image } from '@/components/ui/image';
 import { cn } from '@/lib/utils';
 import { useFavorites } from '@/lib/useFavorites';
-import { ChevronDown, Shuffle, SkipBack, Play, Pause, SkipForward, Repeat, Music, Info, Heart } from 'lucide-react';
+import { ChevronDown, Shuffle, SkipBack, Play, Pause, SkipForward, Repeat, Music, Info, Heart, Loader2 } from 'lucide-react';
 
 export default function NowPlaying({ onClose }) {
   const { t, lang, dir } = useLanguage();
   const {
-    currentTrack, isPlaying, togglePlay, next, prev, currentTime, duration, seek,
+    currentTrack, isPlaying, buffering, togglePlay, next, prev, currentTime, duration, seek,
     queue, currentIndex, shuffle, setShuffle, repeat, setRepeat, playTrack,
   } = usePlayer();
   const { openTrackInfo } = useTrackInfo();
@@ -93,7 +93,7 @@ export default function NowPlaying({ onClose }) {
             <SkipBack className="w-7 h-7" />
           </button>
           <button onClick={togglePlay} className="w-14 h-14 rounded-full bg-primary text-primary-foreground grid place-items-center hover:scale-105 transition-transform" aria-label={isPlaying ? t('player.pause') : t('player.play')}>
-            {isPlaying ? <Pause className="w-7 h-7" /> : <Play className="w-7 h-7 ms-0.5" />}
+            {buffering ? <Loader2 className="w-7 h-7 animate-spin" /> : isPlaying ? <Pause className="w-7 h-7" /> : <Play className="w-7 h-7 ms-0.5" />}
           </button>
           <button onClick={next} className="text-foreground hover:text-muted-foreground transition-colors" aria-label={t('player.next')}>
             <SkipForward className="w-7 h-7" />

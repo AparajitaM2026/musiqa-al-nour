@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Info } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Info, Loader2 } from 'lucide-react';
 import { usePlayer, formatTime } from '@/lib/PlayerContext';
 import { useLanguage, localize } from '@/lib/i18n';
 import { useTrackInfo } from '@/components/TrackInfoModalProvider';
@@ -8,7 +8,7 @@ import { Image } from '@/components/ui/image';
 import { cn } from '@/lib/utils';
 
 export default function AudioPlayer() {
-  const { currentTrack, isPlaying, togglePlay, next, prev, currentTime, duration, seek, volume, setVolume } = usePlayer();
+  const { currentTrack, isPlaying, buffering, togglePlay, next, prev, currentTime, duration, seek, volume, setVolume } = usePlayer();
   const { t, lang } = useLanguage();
   const { openTrackInfo } = useTrackInfo();
   const { openNowPlaying } = useNowPlaying();
@@ -52,7 +52,7 @@ export default function AudioPlayer() {
             className="w-10 h-10 rounded-full bg-primary text-primary-foreground grid place-items-center hover:scale-105 transition-transform"
             aria-label={isPlaying ? t('player.pause') : t('player.play')}
           >
-            {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ms-0.5" />}
+            {buffering ? <Loader2 className="w-5 h-5 animate-spin" /> : isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ms-0.5" />}
           </button>
           <button onClick={(e) => { e.stopPropagation(); next(); }} className="text-muted-foreground hover:text-foreground transition-colors" aria-label={t('player.next')}>
             <SkipForward className="w-5 h-5" />
