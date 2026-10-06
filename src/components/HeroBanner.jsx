@@ -27,10 +27,12 @@ export default function HeroBanner({ items, tracks }) {
 
   if (!current) return null;
 
-  const queue = tracks.filter((tr) => {
-    const genres = String(tr.genre || '').split(',').map((s) => s.trim());
-    return genres.includes(current.genre);
-  });
+  const queue = current.track_ids && current.track_ids.length
+    ? current.track_ids.map((id) => tracks.find((tr) => tr.id === id)).filter(Boolean)
+    : tracks.filter((tr) => {
+        const genres = String(tr.genre || '').split(',').map((s) => s.trim());
+        return genres.includes(current.genre);
+      });
   const handlePlay = () => {
     if (queue.length) playTrack(queue[0], queue);
   };
