@@ -55,7 +55,13 @@ export default function Home() {
     );
   }
 
-  const byGenre = (list) => (genre === 'all' ? list : list.filter((x) => x.genre === genre));
+  const byGenre = (list) =>
+    genre === 'all'
+      ? list
+      : list.filter((x) => {
+          const genres = String(x.genre || '').split(',').map((s) => s.trim());
+          return genres.includes(genre);
+        });
   const visibleTracks = byGenre(tracks);
   const visibleArtists = byGenre(artists);
   const visibleAlbums = byGenre(albums);
@@ -75,7 +81,7 @@ export default function Home() {
 
       <HeroBanner item={featured} tracks={tracks} />
 
-      <GenreChips value={genre} onChange={setGenre} />
+      <GenreChips value={genre} onChange={setGenre} playlists={playlists} />
 
       {follows.length > 0 && (
         <section>

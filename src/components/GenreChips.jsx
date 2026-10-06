@@ -1,26 +1,20 @@
 import React from 'react';
-import { useLanguage } from '@/lib/i18n';
+import { useLanguage, localize } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
-const CHIPS = [
-  'all',
-  'arabic_faith_and_melodies',
-  'khaleeji',
-  'kurdish',
-  'patriotic',
-  'romantic',
-  'yemeni',
-  'djibout',
-  'somali',
-];
+export default function GenreChips({ value, onChange, playlists = [] }) {
+  const { t, lang } = useLanguage();
+  const genreMap = {};
+  for (const p of playlists) {
+    if (p.genre && !genreMap[p.genre]) genreMap[p.genre] = p;
+  }
+  const chips = ['all', ...Object.keys(genreMap)];
 
-export default function GenreChips({ value, onChange }) {
-  const { t } = useLanguage();
   return (
-    <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
-      {CHIPS.map((g) => {
+    <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 no-scrollbar">
+      {chips.map((g) => {
         const active = value === g;
-        const label = g === 'all' ? t('search.all') : t(`genre.${g}`);
+        const label = g === 'all' ? t('search.all') : localize(lang, genreMap[g], 'title') || g;
         return (
           <button
             key={g}
