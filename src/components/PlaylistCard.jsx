@@ -9,10 +9,12 @@ import { cn } from '@/lib/utils';
 export default function PlaylistCard({ playlist, tracks, className }) {
   const { lang, t } = useLanguage();
   const { playTrack } = usePlayer();
-  const genreTracks = tracks.filter((tr) => {
-    const genres = String(tr.genre || '').split(',').map((s) => s.trim());
-    return genres.includes(playlist.genre);
-  });
+  const genreTracks = playlist.track_ids?.length
+    ? playlist.track_ids.map((id) => tracks.find((tr) => tr.id === id)).filter(Boolean)
+    : tracks.filter((tr) => {
+        const genres = String(tr.genre || '').split(',').map((s) => s.trim());
+        return genres.includes(playlist.genre);
+      });
 
   const handlePlay = (e) => {
     e.preventDefault();

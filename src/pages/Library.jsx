@@ -26,7 +26,7 @@ export default function Library() {
   const load = useCallback(async () => {
     try {
       const [tr, pl] = await Promise.all([
-        base44.entities.Track.list(),
+        base44.entities.Track.list('-plays', 1000),
         base44.entities.Playlist.list(),
       ]);
       setTracks(tr);

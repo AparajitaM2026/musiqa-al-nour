@@ -21,7 +21,7 @@ export default function PlaylistDetails() {
     (async () => {
       try {
         const [allTracks, playlists] = await Promise.all([
-          base44.entities.Track.list(),
+          base44.entities.Track.list('-plays', 1000),
           base44.entities.Playlist.list(),
         ]);
         const pl = playlists.find((p) => p.id === id) || null;

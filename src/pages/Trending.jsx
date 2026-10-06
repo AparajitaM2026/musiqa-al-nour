@@ -15,7 +15,7 @@ export default function Trending() {
   const load = useCallback(async () => {
     try {
       const [tr, ar] = await Promise.all([
-        base44.entities.Track.list(),
+        base44.entities.Track.list('-plays', 1000),
         base44.entities.Artist.list(),
       ]);
       setTracks([...tr].sort((a, b) => (b.plays || 0) - (a.plays || 0)).slice(0, 10));

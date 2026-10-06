@@ -27,7 +27,7 @@ export default function Home() {
   const load = useCallback(async () => {
     try {
       const [tr, ar, al, pl] = await Promise.all([
-        base44.entities.Track.list('-plays', 20),
+        base44.entities.Track.list('-plays', 1000),
         base44.entities.Artist.list('-monthly_listeners', 10),
         base44.entities.Album.list(),
         base44.entities.Playlist.list(),
@@ -62,7 +62,7 @@ export default function Home() {
           const genres = String(x.genre || '').split(',').map((s) => s.trim());
           return genres.includes(genre);
         });
-  const visibleTracks = byGenre(tracks);
+  const visibleTracks = byGenre(tracks).slice(0, 20);
   const visibleArtists = byGenre(artists);
   const visibleAlbums = byGenre(albums);
   const visiblePlaylists = byGenre(playlists);

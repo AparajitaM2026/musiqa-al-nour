@@ -34,7 +34,7 @@ export default function Search() {
   const load = useCallback(async () => {
     try {
       const [tr, ar, al, pl] = await Promise.all([
-        base44.entities.Track.list(),
+        base44.entities.Track.list('-plays', 1000),
         base44.entities.Artist.list(),
         base44.entities.Album.list(),
         base44.entities.Playlist.list(),

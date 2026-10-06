@@ -31,7 +31,7 @@ export default function ArtistProfile() {
       try {
         const [a, allTracks, allAlbums] = await Promise.all([
           id ? base44.entities.Artist.get(id) : base44.entities.Artist.list(),
-          base44.entities.Track.list(),
+          base44.entities.Track.list('-plays', 1000),
           base44.entities.Album.list(),
         ]);
         const resolved = id

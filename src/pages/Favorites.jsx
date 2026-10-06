@@ -15,7 +15,7 @@ export default function Favorites() {
   const load = useCallback(async () => {
     try {
       const saved = JSON.parse(localStorage.getItem('musiqa-al-nour-saved-tracks') || '[]');
-      const all = await base44.entities.Track.list();
+      const all = await base44.entities.Track.list('-plays', 1000);
       setTracks(all.filter((tr) => saved.includes(tr.id)));
     } catch (e) {
     } finally {

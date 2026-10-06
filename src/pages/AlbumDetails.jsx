@@ -26,7 +26,7 @@ export default function AlbumDetails() {
       try {
         const [a, allTracks] = await Promise.all([
           base44.entities.Album.get(id),
-          base44.entities.Track.list(),
+          base44.entities.Track.list('-plays', 1000),
         ]);
         setAlbum(a);
         setTracks(
